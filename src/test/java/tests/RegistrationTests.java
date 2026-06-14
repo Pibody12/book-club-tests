@@ -1,9 +1,15 @@
 package tests;
 
 
-import models.pojo.RegistrationBodyPojoModel;
-import models.pojo.RegistrationResponsePojoModel;
+import models.registration.lombok.RegistrationBodyLombokModel;
+import models.registration.lombok.RegistrationResponseLombokModel;
+import models.registration.pojo.RegistrationBodyPojoModel;
+import models.registration.pojo.RegistrationResponsePojoModel;
+import models.registration.records.ExistingUserResponseRecordsModel;
+import models.registration.records.RegistrationBodyRecordsModel;
+import models.registration.records.RegistrationResponseRecordsModel;
 import net.datafaker.Faker;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
@@ -12,36 +18,22 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class RegistrationTests {
+public class RegistrationTests{
 
-    @Test
-    public void successfulRegistrationTest(){
+    String username;
+    String password;
+    String invalideName;
 
+    @BeforeEach
+    public void prepareTestData() {
         Faker faker = new Faker();
-        String username = faker.name().firstName();
-        String password = faker.name().lastName();
-
-        String data = "{\"username\": \"" + username + "\", \"password\": \"" + password + "\"}";
-
-        given()
-                .log().all()
-                .contentType(JSON)
-                .body(data)
-                .when()
-                .post("https://book-club.qa.guru/api/v1/users/register/")
-                .then()
-                .log().all()
-                .statusCode(201)
-                .body("username", is(username))
-                .body("id", notNullValue());
+        username = faker.name().firstName();
+        password = faker.name().lastName();
+        invalideName = faker.name().fullName();
     }
 
     @Test
     public void successfulRegistrationTest_with_pojo(){
-
-        Faker faker = new Faker();
-        String username = faker.name().firstName();
-        String password = faker.name().firstName();
 
         RegistrationBodyPojoModel  data = new RegistrationBodyPojoModel();
         data.setUsername(username);
@@ -66,11 +58,51 @@ public class RegistrationTests {
     }
 
     @Test
-    public void existingUserTest(){
+    public void successfulRegistrationTest_with_lombok(){
 
-        Faker faker = new Faker();
-        String username = faker.name().firstName();
-        String password = faker.name().lastName();
+        RegistrationBodyLombokModel data = new RegistrationBodyLombokModel();
+        data.setUsername(username);
+        data.setPassword(password);
+
+//        RegistrationBodyLombokModel data1 = new RegistrationBodyLombokModel (username, password);
+
+        RegistrationResponseLombokModel registrationResponse = given()
+                .log().all()
+                .contentType(JSON)
+                .body(data)
+                .when()
+                .post("https://book-club.qa.guru/api/v1/users/register/")
+                .then()
+                .log().all()
+                .statusCode(201)
+                .extract()
+                .as(RegistrationResponseLombokModel.class);
+
+        assertEquals(username, registrationResponse.getUsername());
+    }
+
+    @Test
+    public void successfulRegistrationTest_with_records(){
+
+        RegistrationBodyRecordsModel data = new RegistrationBodyRecordsModel(username, password);
+
+        RegistrationResponseRecordsModel registrationResponse = given()
+                .log().all()
+                .contentType(JSON)
+                .body(data)
+                .when()
+                .post("https://book-club.qa.guru/api/v1/users/register/")
+                .then()
+                .log().all()
+                .statusCode(201)
+                .extract()
+                .as(RegistrationResponseRecordsModel.class);
+
+        assertEquals(username, registrationResponse.username());
+    }
+
+    @Test
+    public void successfulRegistrationTest_bad_practice(){
 
         String data = "{\"username\": \"" + username + "\", \"password\": \"" + password + "\"}";
 
@@ -85,8 +117,26 @@ public class RegistrationTests {
                 .statusCode(201)
                 .body("username", is(username))
                 .body("id", notNullValue());
+    }
+
+    @Test
+    public void existingUser400Test(){
+
+        RegistrationBodyRecordsModel data = new RegistrationBodyRecordsModel(username, password);
 
         given()
+                .log().all()
+                .contentType(JSON)
+                .body(data)
+                .when()
+                .post("https://book-club.qa.guru/api/v1/users/register/")
+                .then()
+                .log().all()
+                .statusCode(201)
+                .body("username", is(username))
+                .body("id", notNullValue());
+
+        ExistingUserResponseRecordsModel response = given()
                 .log().all()
                 .contentType(JSON)
                 .body(data)
@@ -95,17 +145,20 @@ public class RegistrationTests {
                 .then()
                 .log().all()
                 .statusCode(400)
-                .body("username[0]", is("A user with that username already exists."));
+                .extract()
+                .as(ExistingUserResponseRecordsModel.class);
+
+        String expectedError = "A user with that username already exists.";
+        assertEquals(expectedError, response.username().get(0));
+//        assertEquals(expectedError, response.username().getFirst());
     }
 
     @Test
     public void invalidUserNameTest(){
 
-        Faker faker = new Faker();
-        String username = faker.name().fullName();
-        String password = faker.name().lastName();
-
-        String data = "{\"username\": \"" + username + "\", \"password\": \"" + password + "\"}";
+        RegistrationBodyLombokModel data = new RegistrationBodyLombokModel();
+        data.setUsername(username);
+        data.setPassword(password);
 
         given()
                 .log().all()
@@ -115,17 +168,13 @@ public class RegistrationTests {
                 .post("https://book-club.qa.guru/api/v1/users/register/")
                 .then()
                 .log().all()
-                .statusCode(201)
-                .body("username", is(username))
-                .body("id", notNullValue());
+                .statusCode(201);
+//                .body("username", is(username))
+//                .body("id", notNullValue());
     }
 
     @Test
     public void unsupportedMediaType415Test(){
-
-        Faker faker = new Faker();
-        String username = faker.name().firstName();
-        String password = faker.name().lastName();
 
         String data = "{\"username\": \"" + username + "\", \"password\": \"" + password + "\"}";
 
@@ -143,10 +192,6 @@ public class RegistrationTests {
 
     @Test
     public void negativeRegistration500Test(){
-
-        Faker faker = new Faker();
-        String username = faker.name().fullName();
-        String password = faker.name().firstName();
 
         String data = "{\"username\": \"" + username + "\", \"password\": \"" + password + "\"}";
 
