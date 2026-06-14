@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'io.qameta.allure' version '3.1.0'
+    id 'io.freefair.lombok' version '9.2.0'
 }
 
 repositories {
@@ -15,6 +16,7 @@ dependencies {
     testImplementation (
             "io.rest-assured:rest-assured:6.0.0",
             "net.datafaker:datafaker:2.5.4",
+            "org.assertj:assertj-core:3.27.7",
             "io.rest-assured:json-schema-validator:6.0.0",
             "com.codeborne:selenide:$selenideVersion",
             "io.qameta.allure:allure-selenide:2.35.2",
