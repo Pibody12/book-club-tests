@@ -2,41 +2,45 @@ package tests;
 
 
 import base.TestBase;
-import models.login.LoginBodyModel;
-import models.login.SuccessfulLoginResponseModel;
-import models.login.WrongCredetialsLoginResponseModel;
+import models.login.*;
+import models.registration.RegistrationBodyModel;
+import models.registration.SuccessfulRegistrationResponseModel;
 import org.junit.jupiter.api.Test;
+import test_data.FakerTestData;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.http.ContentType.JSON;
-import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.notNullValue;
+import static specs.login.LoginSpec.*;
+import static specs.registration.RegistrationSpec.registrationRequestSpec;
+import static specs.registration.RegistrationSpec.successfulRegistrationResponseSpec;
 
 public class LoginTests extends TestBase {
 
-    String username = "Tim42";
-    String password = "string42";
+    FakerTestData fakerTestData = new FakerTestData();
+
     String wrongPassword = "string666";
 
     @Test
     public void successfulLoginTest(){
 
-        LoginBodyModel loginData = new LoginBodyModel(username, password);
+        RegistrationBodyModel registrationData = new RegistrationBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
 
-        SuccessfulLoginResponseModel loginResponse = given()
-                .log().all()
-                .contentType(JSON)
+        SuccessfulRegistrationResponseModel firstRegistrationResponse = given(registrationRequestSpec)
+                .body(registrationData)
+                .when()
+                .post("/users/register/")
+                .then()
+                .spec(successfulRegistrationResponseSpec)
+                .extract().body().as(SuccessfulRegistrationResponseModel.class);
+
+        LoginBodyModel loginData = new LoginBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
+
+        SuccessfulLoginResponseModel loginResponse = given(loginRequestSpec)
                 .body(loginData)
-                .basePath("/api/v1")
                 .when()
                 .post("/auth/token/")
                 .then()
-                .log().all()
-                .statusCode(200)
-                .body(matchesJsonSchemaInClasspath("schemas/login/successful_login_response_schema.json"))
-                .body("access", notNullValue())
-                .body("refresh", notNullValue())
+                .spec(successfulLoginResponseSpec)
                 .extract().body().as(SuccessfulLoginResponseModel.class);
 
         String expectedTokenPath = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9";
@@ -51,24 +55,68 @@ public class LoginTests extends TestBase {
     @Test
     public void wrongCredentialsLoginTest(){
 
-        LoginBodyModel loginData = new LoginBodyModel(username, wrongPassword);
+        RegistrationBodyModel registrationData = new RegistrationBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
 
-        WrongCredetialsLoginResponseModel loginResponse = given()
-                .log().all()
-                .contentType(JSON)
+        SuccessfulRegistrationResponseModel firstRegistrationResponse = given(registrationRequestSpec)
+                .body(registrationData)
+                .when()
+                .post("/users/register/")
+                .then()
+                .spec(successfulRegistrationResponseSpec)
+                .extract().body().as(SuccessfulRegistrationResponseModel.class);
+
+        LoginBodyModel loginData = new LoginBodyModel(fakerTestData.fakerUserFirstName, wrongPassword);
+
+        WrongCredetialsLoginResponseModel loginResponse = given(loginRequestSpec)
                 .body(loginData)
-                .basePath("/api/v1")
                 .when()
                 .post("/auth/token/")
                 .then()
-                .log().all()
-                .statusCode(401)
-                .body(matchesJsonSchemaInClasspath("schemas/login/wrong_credetials_login_response_schema.json"))
-                .body("detail", notNullValue())
+                .spec(wrongCredentialsLoginResponseSpec)
                 .extract().body().as(WrongCredetialsLoginResponseModel.class);
 
         String expectedDetailError = "Invalid username or password.";
         String actualDetailError = loginResponse.detail();
         assertThat(actualDetailError).isEqualTo(expectedDetailError);
+    }
+
+    @Test
+    public void emptyCredentialsLoginTest(){
+
+        LoginBodyModel loginEmptyData = new LoginBodyModel("", "");
+
+        EmptyCredentialsResponseModel loginResponse = given(loginRequestSpec)
+                .body(loginEmptyData)
+                .when()
+                .post("/auth/token/")
+                .then()
+                .spec(emptyCredentialsLoginResponseSpec)
+                .extract().body().as(EmptyCredentialsResponseModel.class);
+
+        String expectedError = "This field may not be blank.";
+        String actualUsernameError = loginResponse.username().getFirst();
+        String actualPasswordError = loginResponse.password().getFirst();
+        assertThat(actualUsernameError).isEqualTo(expectedError);
+        assertThat(actualPasswordError).isEqualTo(expectedError);
+    }
+
+    @Test
+    public void emptyBodyLoginTest(){
+
+        LoginEmptyBodyModel loginData = new LoginEmptyBodyModel();
+
+        EmptyBodyResponseModel loginResponse = given(loginRequestSpec)
+                .body(loginData)
+                .when()
+                .post("/auth/token/")
+                .then()
+                .spec(emptyBodyLoginResponseSpec)
+                .extract().body().as(EmptyBodyResponseModel.class);
+
+        String expectedError = "This field is required.";
+        String actualUsernameError = loginResponse.username().getFirst();
+        String actualPasswordError = loginResponse.password().getFirst();
+        assertThat(actualUsernameError).isEqualTo(expectedError);
+        assertThat(actualPasswordError).isEqualTo(expectedError);
     }
 }
