@@ -10,5 +10,5 @@ public class FakerTestData {
     public String fakerUserFirstName = faker.name().firstName(),
             fakerUserLastName = faker.name().lastName(),
             fakerInvalideName = faker.name().fullName(),
-            fakerPassword = String.valueOf(faker.random().nextInt(10));
+            fakerPassword = String.valueOf(faker.random().nextInt(9999999));
 }
