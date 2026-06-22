@@ -2,7 +2,6 @@ package tests;
 
 import base.TestBase;
 import models.registration.*;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import test_data.FakerTestData;
