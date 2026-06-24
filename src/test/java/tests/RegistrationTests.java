@@ -8,6 +8,7 @@ import test_data.FakerTestData;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
+import static specs.BaseSpec.baseRequestSpec;
 import static specs.registration.RegistrationSpec.*;
 
 public class RegistrationTests extends TestBase {
@@ -20,7 +21,7 @@ public class RegistrationTests extends TestBase {
 
         RegistrationBodyModel registrationData = new RegistrationBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
 
-        SuccessfulRegistrationResponseModel registrationResponse = given(registrationRequestSpec)
+        SuccessfulRegistrationResponseModel registrationResponse = given(baseRequestSpec)
                 .body(registrationData)
                 .when()
                 .post("/users/register/")
@@ -45,7 +46,7 @@ public class RegistrationTests extends TestBase {
 
         RegistrationBodyModel registrationData = new RegistrationBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
 
-        SuccessfulRegistrationResponseModel firstRegistrationResponse = given(registrationRequestSpec)
+        SuccessfulRegistrationResponseModel firstRegistrationResponse = given(baseRequestSpec)
                 .body(registrationData)
                 .when()
                 .post("/users/register/")
@@ -55,7 +56,7 @@ public class RegistrationTests extends TestBase {
 
         assertThat(firstRegistrationResponse.username()).isEqualTo(fakerTestData.fakerUserFirstName);
 
-        ExistingUserResponseModel secondRegistrationResponse = given(registrationRequestSpec)
+        ExistingUserResponseModel secondRegistrationResponse = given(baseRequestSpec)
                 .body(registrationData)
                 .when()
                 .post("/users/register/")
@@ -73,7 +74,7 @@ public class RegistrationTests extends TestBase {
     public void emptyRegistrationsDataRegistrationTest(){
         RegistrationBodyModel registrationData = new RegistrationBodyModel("", "");
 
-        EmptyRegistrationsDataResponseModel registrationResponse = given(registrationRequestSpec)
+        EmptyRegistrationsDataResponseModel registrationResponse = given(baseRequestSpec)
                 .body(registrationData)
                 .when()
                 .post("/users/register/")
@@ -93,7 +94,7 @@ public class RegistrationTests extends TestBase {
     public void invalideUsernameRegistrationTest(){
         RegistrationBodyModel registrationData = new RegistrationBodyModel(fakerTestData.fakerInvalideName, fakerTestData.fakerPassword);
 
-        InvalideNameResponseModel registrationResponse = given(registrationRequestSpec)
+        InvalideNameResponseModel registrationResponse = given(baseRequestSpec)
                 .body(registrationData)
                 .when()
                 .post("/users/register/")

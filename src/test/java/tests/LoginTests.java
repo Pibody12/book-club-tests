@@ -5,13 +5,14 @@ import base.TestBase;
 import models.login.*;
 import models.registration.RegistrationBodyModel;
 import models.registration.SuccessfulRegistrationResponseModel;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import test_data.FakerTestData;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
+import static specs.BaseSpec.baseRequestSpec;
 import static specs.login.LoginSpec.*;
-import static specs.registration.RegistrationSpec.registrationRequestSpec;
 import static specs.registration.RegistrationSpec.successfulRegistrationResponseSpec;
 
 public class LoginTests extends TestBase {
@@ -21,11 +22,12 @@ public class LoginTests extends TestBase {
     String wrongPassword = "string666";
 
     @Test
+    @DisplayName("Успешная авторизация")
     public void successfulLoginTest(){
 
         RegistrationBodyModel registrationData = new RegistrationBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
 
-        SuccessfulRegistrationResponseModel firstRegistrationResponse = given(registrationRequestSpec)
+        SuccessfulRegistrationResponseModel firstRegistrationResponse = given(baseRequestSpec)
                 .body(registrationData)
                 .when()
                 .post("/users/register/")
@@ -35,7 +37,7 @@ public class LoginTests extends TestBase {
 
         LoginBodyModel loginData = new LoginBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
 
-        SuccessfulLoginResponseModel loginResponse = given(loginRequestSpec)
+        SuccessfulLoginResponseModel loginResponse = given(baseRequestSpec)
                 .body(loginData)
                 .when()
                 .post("/auth/token/")
@@ -53,11 +55,12 @@ public class LoginTests extends TestBase {
     }
 
     @Test
+    @DisplayName("Ошибка в пароле при авторизации")
     public void wrongCredentialsLoginTest(){
 
         RegistrationBodyModel registrationData = new RegistrationBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
 
-        SuccessfulRegistrationResponseModel firstRegistrationResponse = given(registrationRequestSpec)
+        SuccessfulRegistrationResponseModel firstRegistrationResponse = given(baseRequestSpec)
                 .body(registrationData)
                 .when()
                 .post("/users/register/")
@@ -67,7 +70,7 @@ public class LoginTests extends TestBase {
 
         LoginBodyModel loginData = new LoginBodyModel(fakerTestData.fakerUserFirstName, wrongPassword);
 
-        WrongCredetialsLoginResponseModel loginResponse = given(loginRequestSpec)
+        WrongCredetialsLoginResponseModel loginResponse = given(baseRequestSpec)
                 .body(loginData)
                 .when()
                 .post("/auth/token/")
@@ -81,11 +84,12 @@ public class LoginTests extends TestBase {
     }
 
     @Test
+    @DisplayName("Авторизация с пустыми данными")
     public void emptyCredentialsLoginTest(){
 
         LoginBodyModel loginEmptyData = new LoginBodyModel("", "");
 
-        EmptyCredentialsResponseModel loginResponse = given(loginRequestSpec)
+        EmptyCredentialsResponseModel loginResponse = given(baseRequestSpec)
                 .body(loginEmptyData)
                 .when()
                 .post("/auth/token/")
@@ -101,11 +105,12 @@ public class LoginTests extends TestBase {
     }
 
     @Test
+    @DisplayName("Авторизация с пустым телом в запросе")
     public void emptyBodyLoginTest(){
 
         LoginEmptyBodyModel loginData = new LoginEmptyBodyModel();
 
-        EmptyBodyResponseModel loginResponse = given(loginRequestSpec)
+        EmptyBodyResponseModel loginResponse = given(baseRequestSpec)
                 .body(loginData)
                 .when()
                 .post("/auth/token/")

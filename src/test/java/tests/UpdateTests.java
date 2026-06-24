@@ -14,12 +14,10 @@ import test_data.FakerTestData;
 import static io.restassured.RestAssured.given;
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
-import static specs.login.LoginSpec.loginRequestSpec;
+import static specs.BaseSpec.baseRequestSpec;
 import static specs.login.LoginSpec.successfulLoginResponseSpec;
-import static specs.registration.RegistrationSpec.registrationRequestSpec;
 import static specs.registration.RegistrationSpec.successfulRegistrationResponseSpec;
 import static specs.update.UpdateSpec.successfulUpdatePatchResponseSpec;
-import static specs.update.UpdateSpec.updateRequestSpec;
 
 public class UpdateTests extends TestBase {
 
@@ -31,7 +29,7 @@ public class UpdateTests extends TestBase {
 
         RegistrationBodyModel registrationData = new RegistrationBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
 
-        SuccessfulRegistrationResponseModel registrationResponse = given(registrationRequestSpec)
+        SuccessfulRegistrationResponseModel registrationResponse = given(baseRequestSpec)
                 .body(registrationData)
                 .when()
                 .post("/users/register/")
@@ -41,7 +39,7 @@ public class UpdateTests extends TestBase {
 
         LoginBodyModel loginData = new LoginBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
 
-        String accessToken = given(loginRequestSpec)
+        String accessToken = given(baseRequestSpec)
                 .body(loginData)
                 .when()
                 .post("/auth/token/")
@@ -54,7 +52,7 @@ public class UpdateTests extends TestBase {
         UpdatePutBodyModel updateData = new UpdatePutBodyModel(
                 fakerTestData.fakerUserFirstName, "Tim", "Drob", "test@test.com");
 
-        SuccessfulUpdatePatchResponseModel updateResponse = given(updateRequestSpec)
+        SuccessfulUpdatePatchResponseModel updateResponse = given(baseRequestSpec)
                 .header("Authorization", token)
                 .body(updateData)
                 .when()
@@ -76,7 +74,7 @@ public class UpdateTests extends TestBase {
 
         RegistrationBodyModel registrationData = new RegistrationBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
 
-        SuccessfulRegistrationResponseModel registrationResponse = given(registrationRequestSpec)
+        SuccessfulRegistrationResponseModel registrationResponse = given(baseRequestSpec)
                 .body(registrationData)
                 .when()
                 .post("/users/register/")
@@ -86,7 +84,7 @@ public class UpdateTests extends TestBase {
 
         LoginBodyModel loginData = new LoginBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
 
-        String accessToken = given(loginRequestSpec)
+        String accessToken = given(baseRequestSpec)
                 .body(loginData)
                 .when()
                 .post("/auth/token/")
@@ -98,7 +96,7 @@ public class UpdateTests extends TestBase {
 
         UpdatePatchBodyModel updateData = new UpdatePatchBodyModel("Tim42", "Drob42");
 
-        SuccessfulUpdatePatchResponseModel updateResponse = given(updateRequestSpec)
+        SuccessfulUpdatePatchResponseModel updateResponse = given(baseRequestSpec)
                 .header("Authorization", token)
                 .body(updateData)
                 .when()

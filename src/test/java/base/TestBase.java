@@ -7,7 +7,7 @@ public class TestBase {
 
     @BeforeAll
     static public void setUp() {
-        RestAssured.baseURI = "http://localhost:8100/";
+        RestAssured.baseURI = "https://book-club.qa.guru/";
     }
 
 }
