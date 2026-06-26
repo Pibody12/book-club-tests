@@ -12,6 +12,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import test_data.FakerTestData;
 
+import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,85 +32,96 @@ public class LogoutTests  extends TestBase {
     @DisplayName("Успешный логаут")
     public void successfulLogoutTest() {
 
-        RegistrationBodyModel registrationData = new RegistrationBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
+        step("Регистрация нового пользователя", () -> {
+            RegistrationBodyModel registrationData = new RegistrationBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
 
-        SuccessfulRegistrationResponseModel firstRegistrationResponse = given(baseRequestSpec)
-                .body(registrationData)
-                .when()
-                .post("/users/register/")
-                .then()
-                .spec(successfulRegistrationResponseSpec)
-                .extract().body().as(SuccessfulRegistrationResponseModel.class);
+            SuccessfulRegistrationResponseModel firstRegistrationResponse = given(baseRequestSpec)
+                    .body(registrationData)
+                    .when()
+                    .post("/users/register/")
+                    .then()
+                    .spec(successfulRegistrationResponseSpec)
+                    .extract().body().as(SuccessfulRegistrationResponseModel.class);
+        });
 
         LoginBodyModel loginData = new LoginBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
 
-        String refreshToken = given(baseRequestSpec)
-                .body(loginData)
-                .when()
-                .post("/auth/token/")
-                .then()
-                .spec(successfulLoginResponseSpec)
-                .extract().path("refresh");
+        String refreshToken = step("Авторизация пользователя", () ->
+                given(baseRequestSpec)
+                    .body(loginData)
+                    .when()
+                    .post("/auth/token/")
+                    .then()
+                    .spec(successfulLoginResponseSpec)
+                    .extract().path("refresh"));
 
-        String logoutData = format("{\"refresh\":\"%s\"}", refreshToken);
+        step("Отправка запроса logout", () -> {
+            String logoutData = format("{\"refresh\":\"%s\"}", refreshToken);
 
-        SuccessfulLogoutResponseModel logoutResponse =  given(baseRequestSpec)
-            .body(logoutData)
-            .when()
-            .post("/auth/logout/")
-            .then()
-            .spec(logoutSuccessfulResponseSpec)
-            .extract().body().as(SuccessfulLogoutResponseModel.class);
+            SuccessfulLogoutResponseModel logoutResponse = given(baseRequestSpec)
+                    .body(logoutData)
+                    .when()
+                    .post("/auth/logout/")
+                    .then()
+                    .spec(logoutSuccessfulResponseSpec)
+                    .extract().body().as(SuccessfulLogoutResponseModel.class);
+        });
     }
 
     @Test
     @DisplayName("Ошибка в токене логаут")
     public void invalideRefreshTokenLogoutTest() {
 
-        WrongRefreshTokenLogoutResponseModel logoutResponse =  given(baseRequestSpec)
-            .body(wrongRefreshToken)
-            .when()
-            .post("/auth/logout/")
-            .then()
-            .spec(wrongRefreshTokenLogoutResponseSpec)
-            .extract().body().as(WrongRefreshTokenLogoutResponseModel.class);
+        step("Отправка запроса logout с невалидным токеном и проверяем ответ", () -> {
+            WrongRefreshTokenLogoutResponseModel logoutResponse = given(baseRequestSpec)
+                    .body(wrongRefreshToken)
+                    .when()
+                    .post("/auth/logout/")
+                    .then()
+                    .spec(wrongRefreshTokenLogoutResponseSpec)
+                    .extract().body().as(WrongRefreshTokenLogoutResponseModel.class);
 
-        String expectedError = "JSON parse error - unexpected character: line 1 column 1 (char 0)";
-        String actualError = logoutResponse.detail();
-        assertThat(actualError).isEqualTo(expectedError);
+            String expectedError = "JSON parse error - unexpected character: line 1 column 1 (char 0)";
+            String actualError = logoutResponse.detail();
+            assertThat(actualError).isEqualTo(expectedError);
+        });
     }
 
     @Test
     @DisplayName("Пустое тело запроса логаут")
     public void emptyBodyResponseLogoutTest() {
 
-        EmptyBodyLogoutResponseModel logoutResponse =  given(baseRequestSpec)
-            .body("")
-            .when()
-            .post("/auth/logout/")
-            .then()
-            .spec(emptyBodyLogoutResponseSpec)
-            .extract().body().as(EmptyBodyLogoutResponseModel.class);
+        step("Отправка запроса logout с пустым телом в запросе и проверяем ответ", () -> {
+            EmptyBodyLogoutResponseModel logoutResponse = given(baseRequestSpec)
+                    .body("")
+                    .when()
+                    .post("/auth/logout/")
+                    .then()
+                    .spec(emptyBodyLogoutResponseSpec)
+                    .extract().body().as(EmptyBodyLogoutResponseModel.class);
 
-        String expectedError = "This field is required.";
-        String actualError = logoutResponse.refresh().getFirst();
-        assertThat(actualError).isEqualTo(expectedError);
+            String expectedError = "This field is required.";
+            String actualError = logoutResponse.refresh().getFirst();
+            assertThat(actualError).isEqualTo(expectedError);
+        });
     }
 
     @Test
     @DisplayName("Не правильный тип данных в запросе логаут")
     public void listWithTwoTokenResponseLogoutTest() {
 
-        ListWithTwoTokenLogoutResponseModel logoutResponse =  given(baseRequestSpec)
-                .body(massiveToken)
-                .when()
-                .post("/auth/logout/")
-                .then()
-                .spec(listWithTwoTokenLogoutResponseSpec)
-                .extract().body().as(ListWithTwoTokenLogoutResponseModel.class);
+        step("Отправка запроса logout с невалидными типами в запросе и проверяем ответ", () -> {
+            ListWithTwoTokenLogoutResponseModel logoutResponse = given(baseRequestSpec)
+                    .body(massiveToken)
+                    .when()
+                    .post("/auth/logout/")
+                    .then()
+                    .spec(listWithTwoTokenLogoutResponseSpec)
+                    .extract().body().as(ListWithTwoTokenLogoutResponseModel.class);
 
-        String expectedError = "Invalid data. Expected a dictionary, but got list.";
-        String actualError = logoutResponse.nonFieldErrors().getFirst();
-        assertThat(actualError).isEqualTo(expectedError);
+            String expectedError = "Invalid data. Expected a dictionary, but got list.";
+            String actualError = logoutResponse.nonFieldErrors().getFirst();
+            assertThat(actualError).isEqualTo(expectedError);
+        });
     }
 }
