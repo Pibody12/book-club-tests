@@ -74,7 +74,7 @@ public class UpdateTests extends TestBase {
 
         RegistrationBodyModel registrationData = new RegistrationBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
 
-        SuccessfulRegistrationResponseModel registrationResponse = given(baseRequestSpec)
+        given(baseRequestSpec)
                 .body(registrationData)
                 .when()
                 .post("/users/register/")
