@@ -79,7 +79,7 @@ public class UpdateTests extends TestBase {
     public void successfulPatchUpdateTest(){
 
         RegistrationBodyModel registrationData = new RegistrationBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
-
+        
         step("Регистрация нового пользователя", () -> {
                 given(baseRequestSpec)
                         .body(registrationData)
