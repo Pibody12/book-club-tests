@@ -75,7 +75,7 @@ public class LoginTests extends TestBase {
                     .extract().body().as(SuccessfulRegistrationResponseModel.class);
         });
 
-        step("Авторизация с неправильным паролем и проверкой ответа", () -> {
+        step("Авторизация с неправильным паролем и проверка ответа", () -> {
             LoginBodyModel loginData = new LoginBodyModel(fakerTestData.fakerUserFirstName, wrongPassword);
 
             WrongCredetialsLoginResponseModel loginResponse = given(baseRequestSpec)
@@ -96,7 +96,7 @@ public class LoginTests extends TestBase {
     @DisplayName("Авторизация с пустыми данными")
     public void emptyCredentialsLoginTest(){
 
-        step("Авторизация с пустыми кредами и проверкой ответа", () -> {
+        step("Авторизация с пустыми кредами и проверка ответа", () -> {
             LoginBodyModel loginEmptyData = new LoginBodyModel("", "");
 
             EmptyCredentialsResponseModel loginResponse = given(baseRequestSpec)
@@ -119,7 +119,7 @@ public class LoginTests extends TestBase {
     @DisplayName("Авторизация с пустым телом в запросе")
     public void emptyBodyLoginTest(){
 
-        step("Авторизация с пустым телом в запросе и проверкой ответа", () -> {
+        step("Авторизация с пустым телом в запросе и проверка ответа", () -> {
             LoginEmptyBodyModel loginData = new LoginEmptyBodyModel();
 
             EmptyBodyResponseModel loginResponse = given(baseRequestSpec)

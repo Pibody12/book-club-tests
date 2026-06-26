@@ -35,7 +35,7 @@ public class LogoutTests  extends TestBase {
         step("Регистрация нового пользователя", () -> {
             RegistrationBodyModel registrationData = new RegistrationBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
 
-            SuccessfulRegistrationResponseModel firstRegistrationResponse = given(baseRequestSpec)
+            given(baseRequestSpec)
                     .body(registrationData)
                     .when()
                     .post("/users/register/")
@@ -47,18 +47,18 @@ public class LogoutTests  extends TestBase {
         LoginBodyModel loginData = new LoginBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
 
         String refreshToken = step("Авторизация пользователя", () ->
-                given(baseRequestSpec)
-                    .body(loginData)
-                    .when()
-                    .post("/auth/token/")
-                    .then()
-                    .spec(successfulLoginResponseSpec)
-                    .extract().path("refresh"));
+            given(baseRequestSpec)
+                .body(loginData)
+                .when()
+                .post("/auth/token/")
+                .then()
+                .spec(successfulLoginResponseSpec)
+                .extract().path("refresh"));
 
         step("Отправка запроса logout", () -> {
             String logoutData = format("{\"refresh\":\"%s\"}", refreshToken);
 
-            SuccessfulLogoutResponseModel logoutResponse = given(baseRequestSpec)
+            given(baseRequestSpec)
                     .body(logoutData)
                     .when()
                     .post("/auth/logout/")
@@ -72,7 +72,7 @@ public class LogoutTests  extends TestBase {
     @DisplayName("Ошибка в токене логаут")
     public void invalideRefreshTokenLogoutTest() {
 
-        step("Отправка запроса logout с невалидным токеном и проверяем ответ", () -> {
+        step("Отправка запроса logout с невалидным токеном и проверка ответа", () -> {
             WrongRefreshTokenLogoutResponseModel logoutResponse = given(baseRequestSpec)
                     .body(wrongRefreshToken)
                     .when()
@@ -91,7 +91,7 @@ public class LogoutTests  extends TestBase {
     @DisplayName("Пустое тело запроса логаут")
     public void emptyBodyResponseLogoutTest() {
 
-        step("Отправка запроса logout с пустым телом в запросе и проверяем ответ", () -> {
+        step("Отправка запроса logout с пустым телом в запросе и проверка ответа", () -> {
             EmptyBodyLogoutResponseModel logoutResponse = given(baseRequestSpec)
                     .body("")
                     .when()
@@ -107,7 +107,7 @@ public class LogoutTests  extends TestBase {
     }
 
     @Test
-    @DisplayName("Не правильный тип данных в запросе логаут")
+    @DisplayName("Не правильный тип данных в запросе логаут и проверка ответа")
     public void listWithTwoTokenResponseLogoutTest() {
 
         step("Отправка запроса logout с невалидными типами в запросе и проверяем ответ", () -> {

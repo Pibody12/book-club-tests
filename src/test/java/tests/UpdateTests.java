@@ -11,6 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import test_data.FakerTestData;
 
+import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,43 +30,48 @@ public class UpdateTests extends TestBase {
 
         RegistrationBodyModel registrationData = new RegistrationBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
 
-        SuccessfulRegistrationResponseModel registrationResponse = given(baseRequestSpec)
-                .body(registrationData)
-                .when()
-                .post("/users/register/")
-                .then()
-                .spec(successfulRegistrationResponseSpec)
-                .extract().body().as(SuccessfulRegistrationResponseModel.class);
+        step("Регистрация нового пользователя", () -> {
+                given(baseRequestSpec)
+                        .body(registrationData)
+                        .when()
+                        .post("/users/register/")
+                        .then()
+                        .spec(successfulRegistrationResponseSpec)
+                        .extract().body().as(SuccessfulRegistrationResponseModel.class);
+        });
 
         LoginBodyModel loginData = new LoginBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
 
-        String accessToken = given(baseRequestSpec)
-                .body(loginData)
-                .when()
-                .post("/auth/token/")
-                .then()
-                .spec(successfulLoginResponseSpec)
-                .extract().path("access");
+        String accessToken =  step("Авторизация пользователя и получение токена", () ->
+                    given(baseRequestSpec)
+                            .body(loginData)
+                            .when()
+                            .post("/auth/token/")
+                            .then()
+                            .spec(successfulLoginResponseSpec)
+                            .extract().path("access"));
 
         String token = format("Bearer %s", accessToken);
 
         UpdatePutBodyModel updateData = new UpdatePutBodyModel(
                 fakerTestData.fakerUserFirstName, "Tim", "Drob", "test@test.com");
 
-        SuccessfulUpdatePatchResponseModel updateResponse = given(baseRequestSpec)
-                .header("Authorization", token)
-                .body(updateData)
-                .when()
-                .put("/users/me/")
-                .then()
-                .spec(successfulUpdatePatchResponseSpec)
-                .extract().body().as(SuccessfulUpdatePatchResponseModel.class);
+        step("Обновление данных пользователя и проверка ответа", () -> {
+            SuccessfulUpdatePatchResponseModel updateResponse = given(baseRequestSpec)
+                    .header("Authorization", token)
+                    .body(updateData)
+                    .when()
+                    .put("/users/me/")
+                    .then()
+                    .spec(successfulUpdatePatchResponseSpec)
+                    .extract().body().as(SuccessfulUpdatePatchResponseModel.class);
 
-        assertThat(updateResponse.id()).isGreaterThan(0);
-        assertThat(updateResponse.username()).isEqualTo(fakerTestData.fakerUserFirstName);
-        assertThat(updateResponse.firstName()).isEqualTo("Tim");
-        assertThat(updateResponse.lastName()).isEqualTo("Drob");
-        assertThat(updateResponse.email()).isEqualTo("test@test.com");
+            assertThat(updateResponse.id()).isGreaterThan(0);
+            assertThat(updateResponse.username()).isEqualTo(fakerTestData.fakerUserFirstName);
+            assertThat(updateResponse.firstName()).isEqualTo("Tim");
+            assertThat(updateResponse.lastName()).isEqualTo("Drob");
+            assertThat(updateResponse.email()).isEqualTo("test@test.com");
+        });
     }
 
     @Test
@@ -74,40 +80,45 @@ public class UpdateTests extends TestBase {
 
         RegistrationBodyModel registrationData = new RegistrationBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
 
-        SuccessfulRegistrationResponseModel registrationResponse = given(baseRequestSpec)
-                .body(registrationData)
-                .when()
-                .post("/users/register/")
-                .then()
-                .spec(successfulRegistrationResponseSpec)
-                .extract().body().as(SuccessfulRegistrationResponseModel.class);
+        step("Регистрация нового пользователя", () -> {
+                given(baseRequestSpec)
+                        .body(registrationData)
+                        .when()
+                        .post("/users/register/")
+                        .then()
+                        .spec(successfulRegistrationResponseSpec)
+                        .extract().body().as(SuccessfulRegistrationResponseModel.class);
+        });
 
         LoginBodyModel loginData = new LoginBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
 
-        String accessToken = given(baseRequestSpec)
-                .body(loginData)
-                .when()
-                .post("/auth/token/")
-                .then()
-                .spec(successfulLoginResponseSpec)
-                .extract().path("access");
+        String accessToken =   step("Авторизация пользователя и получение токена", () ->
+                    given(baseRequestSpec)
+                            .body(loginData)
+                            .when()
+                            .post("/auth/token/")
+                            .then()
+                            .spec(successfulLoginResponseSpec)
+                            .extract().path("access"));
 
         String token = format("Bearer %s", accessToken);
 
         UpdatePatchBodyModel updateData = new UpdatePatchBodyModel("Tim42", "Drob42");
 
-        SuccessfulUpdatePatchResponseModel updateResponse = given(baseRequestSpec)
-                .header("Authorization", token)
-                .body(updateData)
-                .when()
-                .patch("/users/me/")
-                .then()
-                .spec(successfulUpdatePatchResponseSpec)
-                .extract().body().as(SuccessfulUpdatePatchResponseModel.class);
+        step("Обновление части данных пользователя и проверка ответа", () -> {
+            SuccessfulUpdatePatchResponseModel updateResponse = given(baseRequestSpec)
+                    .header("Authorization", token)
+                    .body(updateData)
+                    .when()
+                    .patch("/users/me/")
+                    .then()
+                    .spec(successfulUpdatePatchResponseSpec)
+                    .extract().body().as(SuccessfulUpdatePatchResponseModel.class);
 
-        assertThat(updateResponse.id()).isGreaterThan(0);
-        assertThat(updateResponse.username()).isEqualTo(fakerTestData.fakerUserFirstName);
-        assertThat(updateResponse.firstName()).isEqualTo("Tim42");
-        assertThat(updateResponse.lastName()).isEqualTo("Drob42");
+            assertThat(updateResponse.id()).isGreaterThan(0);
+            assertThat(updateResponse.username()).isEqualTo(fakerTestData.fakerUserFirstName);
+            assertThat(updateResponse.firstName()).isEqualTo("Tim42");
+            assertThat(updateResponse.lastName()).isEqualTo("Drob42");
+        });
     }
 }
