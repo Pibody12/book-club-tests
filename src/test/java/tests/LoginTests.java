@@ -4,21 +4,13 @@ package tests;
 import base.TestBase;
 import models.login.*;
 import models.registration.RegistrationBodyModel;
-import models.registration.SuccessfulRegistrationResponseModel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import test_data.FakerTestData;
 
 import static io.qameta.allure.Allure.step;
-import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
-import static specs.BaseSpec.baseRequestSpec;
-import static specs.login.LoginSpec.*;
-import static specs.registration.RegistrationSpec.successfulRegistrationResponseSpec;
 
 public class LoginTests extends TestBase {
-
-    FakerTestData fakerTestData = new FakerTestData();
 
     String wrongPassword = "string666";
 
@@ -27,114 +19,61 @@ public class LoginTests extends TestBase {
     public void successfulLoginTest(){
 
         RegistrationBodyModel registrationData = new RegistrationBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
+        api.registre.registerUser(registrationData);
 
-        step("Регистрация нового пользователя", () ->{
-        SuccessfulRegistrationResponseModel firstRegistrationResponse = given(baseRequestSpec)
-                .body(registrationData)
-                .when()
-                .post("/users/register/")
-                .then()
-                .spec(successfulRegistrationResponseSpec)
-                .extract().body().as(SuccessfulRegistrationResponseModel.class);
-        });
 
-        step("Авторизация и проверка ответа", () ->{
-            LoginBodyModel loginData = new LoginBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
+        LoginBodyModel loginData = new LoginBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
+        SuccessfulLoginResponseModel loginResponse = api.login.loginUser(loginData);
 
-            SuccessfulLoginResponseModel loginResponse = given(baseRequestSpec)
-                    .body(loginData)
-                    .when()
-                    .post("/auth/token/")
-                    .then()
-                    .spec(successfulLoginResponseSpec)
-                    .extract().body().as(SuccessfulLoginResponseModel.class);
+        String expectedTokenPath = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9";
+        String actualAccess = loginResponse.access();
+        String actualRefresh = loginResponse.refresh();
 
-            String expectedTokenPath = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9";
-            String actualAccess = loginResponse.access();
-            String actualRefresh = loginResponse.refresh();
-
-            assertThat(actualAccess).startsWith(expectedTokenPath);
-            assertThat(actualRefresh).startsWith(expectedTokenPath);
-            assertThat(actualAccess).isNotEqualTo(actualRefresh);
-        });
+        assertThat(actualAccess).startsWith(expectedTokenPath);
+        assertThat(actualRefresh).startsWith(expectedTokenPath);
+        assertThat(actualAccess).isNotEqualTo(actualRefresh);
     }
 
     @Test
     @DisplayName("Ошибка в пароле при авторизации")
     public void wrongCredentialsLoginTest(){
 
-        step("Регистрация нового пользователя", () -> {
-            RegistrationBodyModel registrationData = new RegistrationBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
+        RegistrationBodyModel registrationData = new RegistrationBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
+        api.registre.registerUser(registrationData);
 
-            SuccessfulRegistrationResponseModel firstRegistrationResponse = given(baseRequestSpec)
-                    .body(registrationData)
-                    .when()
-                    .post("/users/register/")
-                    .then()
-                    .spec(successfulRegistrationResponseSpec)
-                    .extract().body().as(SuccessfulRegistrationResponseModel.class);
-        });
+        LoginBodyModel loginData = new LoginBodyModel(fakerTestData.fakerUserFirstName, wrongPassword);
+        WrongCredetialsLoginResponseModel loginResponse = api.login.wrongPasswordLogin(loginData);
 
-        step("Авторизация с неправильным паролем и проверка ответа", () -> {
-            LoginBodyModel loginData = new LoginBodyModel(fakerTestData.fakerUserFirstName, wrongPassword);
-
-            WrongCredetialsLoginResponseModel loginResponse = given(baseRequestSpec)
-                    .body(loginData)
-                    .when()
-                    .post("/auth/token/")
-                    .then()
-                    .spec(wrongCredentialsLoginResponseSpec)
-                    .extract().body().as(WrongCredetialsLoginResponseModel.class);
-
-            String expectedDetailError = "Invalid username or password.";
-            String actualDetailError = loginResponse.detail();
-            assertThat(actualDetailError).isEqualTo(expectedDetailError);
-        });
+        String expectedDetailError = "Invalid username or password.";
+        String actualDetailError = loginResponse.detail();
+        assertThat(actualDetailError).isEqualTo(expectedDetailError);
     }
 
     @Test
     @DisplayName("Авторизация с пустыми данными")
     public void emptyCredentialsLoginTest(){
 
-        step("Авторизация с пустыми кредами и проверка ответа", () -> {
-            LoginBodyModel loginEmptyData = new LoginBodyModel("", "");
+        LoginBodyModel loginEmptyData = new LoginBodyModel("", "");
+        EmptyCredentialsResponseModel loginResponse = api.login.emptyPasswordLogin(loginEmptyData);
 
-            EmptyCredentialsResponseModel loginResponse = given(baseRequestSpec)
-                    .body(loginEmptyData)
-                    .when()
-                    .post("/auth/token/")
-                    .then()
-                    .spec(emptyCredentialsLoginResponseSpec)
-                    .extract().body().as(EmptyCredentialsResponseModel.class);
-
-            String expectedError = "This field may not be blank.";
-            String actualUsernameError = loginResponse.username().getFirst();
-            String actualPasswordError = loginResponse.password().getFirst();
-            assertThat(actualUsernameError).isEqualTo(expectedError);
-            assertThat(actualPasswordError).isEqualTo(expectedError);
-        });
+        String expectedError = "This field may not be blank.";
+        String actualUsernameError = loginResponse.username().getFirst();
+        String actualPasswordError = loginResponse.password().getFirst();
+        assertThat(actualUsernameError).isEqualTo(expectedError);
+        assertThat(actualPasswordError).isEqualTo(expectedError);
     }
 
     @Test
     @DisplayName("Авторизация с пустым телом в запросе")
     public void emptyBodyLoginTest(){
 
-        step("Авторизация с пустым телом в запросе и проверка ответа", () -> {
-            LoginEmptyBodyModel loginData = new LoginEmptyBodyModel();
+        LoginEmptyBodyModel loginData = new LoginEmptyBodyModel();
+        EmptyBodyResponseModel loginResponse = api.login.emptyBodyLogin(loginData);
 
-            EmptyBodyResponseModel loginResponse = given(baseRequestSpec)
-                    .body(loginData)
-                    .when()
-                    .post("/auth/token/")
-                    .then()
-                    .spec(emptyBodyLoginResponseSpec)
-                    .extract().body().as(EmptyBodyResponseModel.class);
-
-            String expectedError = "This field is required.";
-            String actualUsernameError = loginResponse.username().getFirst();
-            String actualPasswordError = loginResponse.password().getFirst();
-            assertThat(actualUsernameError).isEqualTo(expectedError);
-            assertThat(actualPasswordError).isEqualTo(expectedError);
-        });
+        String expectedError = "This field is required.";
+        String actualUsernameError = loginResponse.username().getFirst();
+        String actualPasswordError = loginResponse.password().getFirst();
+        assertThat(actualUsernameError).isEqualTo(expectedError);
+        assertThat(actualPasswordError).isEqualTo(expectedError);
     }
 }
