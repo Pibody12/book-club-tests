@@ -1,13 +1,13 @@
 package tests.model_examples;
 
 
-import models.registration.model_examples.lombok.RegistrationBodyLombokModel;
-import models.registration.model_examples.lombok.RegistrationResponseLombokModel;
-import models.registration.model_examples.pojo.RegistrationBodyPojoModel;
-import models.registration.model_examples.pojo.RegistrationResponsePojoModel;
-import models.registration.model_examples.records.ExistingUserResponseRecordsModel;
-import models.registration.model_examples.records.RegistrationBodyRecordsModel;
-import models.registration.model_examples.records.RegistrationResponseRecordsModel;
+import models.user.registration.model_examples.lombok.RegistrationBodyLombokModel;
+import models.user.registration.model_examples.lombok.RegistrationResponseLombokModel;
+import models.user.registration.model_examples.pojo.RegistrationBodyPojoModel;
+import models.user.registration.model_examples.pojo.RegistrationResponsePojoModel;
+import models.user.registration.model_examples.records.ExistingUserResponseRecordsModel;
+import models.user.registration.model_examples.records.RegistrationBodyRecordsModel;
+import models.user.registration.model_examples.records.RegistrationResponseRecordsModel;
 import net.datafaker.Faker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
