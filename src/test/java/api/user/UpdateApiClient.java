@@ -6,7 +6,7 @@ import models.user.update.SuccessfulUpdatePutResponseModel;
 
 import static io.restassured.RestAssured.given;
 import static specs.BaseSpec.baseRequestSpec;
-import static specs.user.update.UpdateSpec.successfulUpdatePatchResponseSpec;
+import static specs.user.UpdateSpec.successfulUpdatePatchResponseSpec;
 
 public class UpdateApiClient {
     @Step("Обновление всех данных пользователя")

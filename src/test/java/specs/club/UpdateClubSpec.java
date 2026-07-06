@@ -14,7 +14,7 @@ public class UpdateClubSpec {
                     .log(ALL)
                     .expectStatusCode(200)
                     .expectBody(matchesJsonSchemaInClasspath(
-                            "schemas/club/successful_update_club_response_ schema.json"))
+                            "schemas/club/successful_update_club_response_schema.json"))
                     .expectBody("id", notNullValue())
                     .expectBody("bookTitle", notNullValue())
                     .expectBody("bookAuthors", notNullValue())

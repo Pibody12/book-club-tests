@@ -1,7 +1,6 @@
 package api.user;
 
 import io.qameta.allure.Step;
-import io.restassured.response.Response;
 import models.user.login.EmptyBodyResponseModel;
 import models.user.login.EmptyCredentialsResponseModel;
 import models.user.login.SuccessfulLoginResponseModel;
@@ -9,7 +8,7 @@ import models.user.login.WrongCredetialsLoginResponseModel;
 
 import static io.restassured.RestAssured.given;
 import static specs.BaseSpec.baseRequestSpec;
-import static specs.user.login.LoginSpec.*;
+import static specs.user.LoginSpec.*;
 
 public class LoginApiClient {
 

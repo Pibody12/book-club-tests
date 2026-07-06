@@ -1,4 +1,4 @@
-package specs.user.logout;
+package specs.user;
 
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.specification.ResponseSpecification;

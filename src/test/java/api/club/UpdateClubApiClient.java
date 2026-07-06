@@ -1,7 +1,7 @@
 package api.club;
 
 import io.qameta.allure.Step;
-import models.club.create.SuccessfulUpdateClubResponseModel;
+import models.club.update.SuccessfulUpdateClubResponseModel;
 
 import static io.restassured.RestAssured.given;
 import static specs.BaseSpec.baseRequestSpec;

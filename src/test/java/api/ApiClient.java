@@ -2,6 +2,8 @@ package api;
 
 
 import api.club.CreateClubApiClient;
+import api.club.DeleteClubApiClient;
+import api.club.GetClubApiClient;
 import api.club.UpdateClubApiClient;
 import api.user.LoginApiClient;
 import api.user.LogoutApiClient;
@@ -18,5 +20,6 @@ public class ApiClient {
     public final UpdateApiClient update = new UpdateApiClient();
     public final CreateClubApiClient createClub = new CreateClubApiClient();
     public final UpdateClubApiClient updateClub = new UpdateClubApiClient();
-
+    public final DeleteClubApiClient deleteClub = new DeleteClubApiClient();
+    public final GetClubApiClient getClub = new GetClubApiClient();
 }

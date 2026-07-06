@@ -3,7 +3,7 @@ package tests.club;
 import base.TestBaseClub;
 import models.club.create.CreateClubBodyModel;
 import models.club.create.SuccessfulCreateClubResponseModel;
-import models.club.create.SuccessfulUpdateClubResponseModel;
+import models.club.update.SuccessfulUpdateClubResponseModel;
 import models.club.update.UpdateClubBodyModel;
 import models.user.login.LoginBodyModel;
 import models.user.registration.RegistrationBodyModel;

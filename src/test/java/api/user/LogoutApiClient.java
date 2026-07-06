@@ -8,7 +8,7 @@ import models.user.logout.WrongRefreshTokenLogoutResponseModel;
 
 import static io.restassured.RestAssured.given;
 import static specs.BaseSpec.baseRequestSpec;
-import static specs.user.logout.LogoutSpec.*;
+import static specs.user.LogoutSpec.*;
 
 public class LogoutApiClient {
 

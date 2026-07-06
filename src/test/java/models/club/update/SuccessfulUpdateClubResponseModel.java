@@ -1,4 +1,4 @@
-package models.club.create;
+package models.club.update;
 
 import java.util.List;
 

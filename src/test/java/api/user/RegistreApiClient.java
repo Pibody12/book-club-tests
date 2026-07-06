@@ -8,7 +8,7 @@ import models.user.registration.SuccessfulRegistrationResponseModel;
 
 import static io.restassured.RestAssured.given;
 import static specs.BaseSpec.baseRequestSpec;
-import static specs.user.registration.RegistrationSpec.*;
+import static specs.user.RegistrationSpec.*;
 
 public class RegistreApiClient {
 
