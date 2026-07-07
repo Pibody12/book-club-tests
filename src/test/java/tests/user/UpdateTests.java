@@ -1,6 +1,6 @@
 package tests.user;
 
-import base.TestBaseUser;
+import base.TestBase;
 import models.user.login.LoginBodyModel;
 import models.user.registration.RegistrationBodyModel;
 import models.user.update.SuccessfulUpdatePatchResponseModel;
@@ -14,7 +14,7 @@ import test_data.FakerTestData;
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class UpdateTests extends TestBaseUser {
+public class UpdateTests extends TestBase {
 
     FakerTestData fakerTestData = new FakerTestData();
 

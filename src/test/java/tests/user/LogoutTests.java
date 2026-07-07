@@ -1,6 +1,6 @@
 package tests.user;
 
-import base.TestBaseUser;
+import base.TestBase;
 import models.user.login.LoginBodyModel;
 import models.user.logout.EmptyBodyLogoutResponseModel;
 import models.user.logout.ListWithTwoTokenLogoutResponseModel;
@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class LogoutTests  extends TestBaseUser {
+public class LogoutTests  extends TestBase {
 
     @Test
     @DisplayName("Успешный логаут")

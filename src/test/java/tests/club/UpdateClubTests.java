@@ -1,6 +1,6 @@
 package tests.club;
 
-import base.TestBaseClub;
+import base.TestBase;
 import models.club.create.CreateClubBodyModel;
 import models.club.create.SuccessfulCreateClubResponseModel;
 import models.club.update.SuccessfulUpdateClubResponseModel;
@@ -10,14 +10,11 @@ import models.user.registration.RegistrationBodyModel;
 import models.user.registration.SuccessfulRegistrationResponseModel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import test_data.FakerTestData;
 
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class UpdateClubTests extends TestBaseClub {
-
-    FakerTestData fakerTestData = new FakerTestData();
+public class UpdateClubTests extends TestBase {
 
     @Test
     @DisplayName("Изменение клуба")

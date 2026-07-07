@@ -1,6 +1,6 @@
 package tests.club;
 
-import base.TestBaseClub;
+import base.TestBase;
 import models.club.create.CreateClubBodyModel;
 import models.club.create.SuccessfulCreateClubResponseModel;
 import models.user.login.LoginBodyModel;
@@ -14,9 +14,7 @@ import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class CreateClubTests extends TestBaseClub {
-
-    FakerTestData fakerTestData = new FakerTestData();
+public class CreateClubTests extends TestBase {
 
     @Test
     @DisplayName("Создание клуба")

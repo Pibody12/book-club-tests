@@ -1,13 +1,13 @@
 package tests.user;
 
-import base.TestBaseUser;
+import base.TestBase;
 import models.user.registration.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class RegistrationTests extends TestBaseUser {
+public class RegistrationTests extends TestBase {
 
     @Test
     @DisplayName("Успешная регистрация")

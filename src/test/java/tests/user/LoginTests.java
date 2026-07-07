@@ -1,16 +1,15 @@
 package tests.user;
 
 
-import base.TestBaseUser;
+import base.TestBase;
 import models.user.login.*;
 import models.user.registration.RegistrationBodyModel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class LoginTests extends TestBaseUser {
+public class LoginTests extends TestBase {
 
     String wrongPassword = "string666";
 
