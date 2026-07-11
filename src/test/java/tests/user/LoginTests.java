@@ -7,7 +7,7 @@ import models.user.registration.RegistrationBodyModel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static test_data.TestData.*;
 
 public class LoginTests extends TestBase {
 
@@ -23,55 +23,51 @@ public class LoginTests extends TestBase {
         LoginBodyModel loginData = new LoginBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
         SuccessfulLoginResponseModel loginResponse = api.login.loginUser(loginData);
 
-        String expectedTokenPath = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9";
         String actualAccess = loginResponse.access();
         String actualRefresh = loginResponse.refresh();
 
-        assertThat(actualAccess).startsWith(expectedTokenPath);
-        assertThat(actualRefresh).startsWith(expectedTokenPath);
-        assertThat(actualAccess).isNotEqualTo(actualRefresh);
+
+        verificationSteps.shouldHaveBegin("Access token", actualAccess, PREFIX_TOKEN);
+        verificationSteps.shouldHaveBegin("Refresh token", actualRefresh, PREFIX_TOKEN);
+        verificationSteps.notShouldHaveValue("Access token", "Refresh token", actualAccess, actualRefresh);
     }
 
     @Test
     @DisplayName("Ошибка в пароле при авторизации")
     public void wrongCredentialsLoginTest(){
 
-        RegistrationBodyModel registrationData = new RegistrationBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
-        api.registre.registerUser(registrationData);
+        api.registre.registerUser(
+                new RegistrationBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword)
+        );
 
-        LoginBodyModel loginData = new LoginBodyModel(fakerTestData.fakerUserFirstName, wrongPassword);
-        WrongCredetialsLoginResponseModel loginResponse = api.login.wrongPasswordLogin(loginData);
+        WrongCredetialsLoginResponseModel loginResponse = api.login.wrongPasswordLogin(
+                new LoginBodyModel(fakerTestData.fakerUserFirstName, wrongPassword)
+        );
 
-        String expectedDetailError = "Invalid username or password.";
-        String actualDetailError = loginResponse.detail();
-        assertThat(actualDetailError).isEqualTo(expectedDetailError);
+        verificationSteps.shouldHaveBegin("Detail", loginResponse.detail(), INVALIDE_CREDLS);
     }
 
     @Test
     @DisplayName("Авторизация с пустыми данными")
     public void emptyCredentialsLoginTest(){
 
-        LoginBodyModel loginEmptyData = new LoginBodyModel("", "");
-        EmptyCredentialsResponseModel loginResponse = api.login.emptyPasswordLogin(loginEmptyData);
+        EmptyCredentialsResponseModel loginResponse = api.login.emptyPasswordLogin(
+                new LoginBodyModel("", "")
+        );
 
-        String expectedError = "This field may not be blank.";
-        String actualUsernameError = loginResponse.username().getFirst();
-        String actualPasswordError = loginResponse.password().getFirst();
-        assertThat(actualUsernameError).isEqualTo(expectedError);
-        assertThat(actualPasswordError).isEqualTo(expectedError);
+        verificationSteps.shouldHaveValue("Username", loginResponse.username().getFirst(), BLANK_FIELD);
+        verificationSteps.shouldHaveValue("Password", loginResponse.password().getFirst(), BLANK_FIELD);
     }
 
     @Test
     @DisplayName("Авторизация с пустым телом в запросе")
     public void emptyBodyLoginTest(){
 
-        LoginEmptyBodyModel loginData = new LoginEmptyBodyModel();
-        EmptyBodyResponseModel loginResponse = api.login.emptyBodyLogin(loginData);
+        EmptyBodyResponseModel loginResponse = api.login.emptyBodyLogin(
+                new LoginEmptyBodyModel()
+        );
 
-        String expectedError = "This field is required.";
-        String actualUsernameError = loginResponse.username().getFirst();
-        String actualPasswordError = loginResponse.password().getFirst();
-        assertThat(actualUsernameError).isEqualTo(expectedError);
-        assertThat(actualPasswordError).isEqualTo(expectedError);
+        verificationSteps.shouldHaveValue("Username", loginResponse.username().getFirst(), REQUIRED_FIELD_MESSAGE);
+        verificationSteps.shouldHaveValue("Password", loginResponse.password().getFirst(), REQUIRED_FIELD_MESSAGE);
     }
 }

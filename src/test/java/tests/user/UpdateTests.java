@@ -22,46 +22,54 @@ public class UpdateTests extends TestBase {
     @DisplayName("Обновление всех данных пользователя")
     public void successfulPutUpdateTest(){
 
-        RegistrationBodyModel registrationData =
-                new RegistrationBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
-        api.registre.registerUser(registrationData);
+        api.registre.registerUser(
+                new RegistrationBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword)
+        );
 
-        LoginBodyModel loginData =
-                new LoginBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
-        String accessToken = api.login.loginUserAndGetAccessToken(loginData);
+        String accessToken = api.login.loginUserAndGetAccessToken(
+                new LoginBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword)
+        );
 
         String token = format("Bearer %s", accessToken);
-        UpdatePutBodyModel updateData = new UpdatePutBodyModel(
-                fakerTestData.fakerUserFirstName, "Tim", "Drob", "test@test.com");
-        SuccessfulUpdatePutResponseModel updateResponse = api.update.updatePutUser(updateData, token);
+        String firstName = "Tim";
+        String lastName = "Drob";
+        String email = "test@test.com";
 
-        assertThat(updateResponse.id()).isGreaterThan(0);
-        assertThat(updateResponse.username()).isEqualTo(fakerTestData.fakerUserFirstName);
-        assertThat(updateResponse.firstName()).isEqualTo("Tim");
-        assertThat(updateResponse.lastName()).isEqualTo("Drob");
-        assertThat(updateResponse.email()).isEqualTo("test@test.com");
+        UpdatePutBodyModel updateData = new UpdatePutBodyModel(
+                fakerTestData.fakerUserFirstName, firstName, lastName, email);
+
+        SuccessfulUpdatePutResponseModel updateResponse =
+                api.update.updatePutUser(updateData, token);
+
+        verificationSteps.moreThan("id", updateResponse.id(), 0);
+        verificationSteps.shouldHaveValue("username", updateResponse.username(), fakerTestData.fakerUserFirstName);
+        verificationSteps.shouldHaveValue("first name", updateResponse.firstName(), firstName);
+        verificationSteps.shouldHaveValue("last name", updateResponse.lastName(), lastName);
+        verificationSteps.shouldHaveValue("email", updateResponse.email(), email);
     }
 
     @Test
     @DisplayName("Обновление части данных пользователя")
     public void successfulPatchUpdateTest(){
 
-        RegistrationBodyModel registrationData =
-                new RegistrationBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
-        api.registre.registerUser(registrationData);
+        api.registre.registerUser(
+                new RegistrationBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword)
+        );
 
-        LoginBodyModel loginData =
-                new LoginBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
-        String accessToken =  api.login.loginUserAndGetAccessToken(loginData);
+        String accessToken =  api.login.loginUserAndGetAccessToken(
+                new LoginBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword)
+        );
 
         String token = format("Bearer %s", accessToken);
+        String firstName = "Tim42";
+        String lastName = "Drob42";
         UpdatePatchBodyModel updateData =
-                new UpdatePatchBodyModel("Tim42", "Drob42");
+                new UpdatePatchBodyModel(firstName, lastName);
         SuccessfulUpdatePatchResponseModel updateResponse = api.update.updatePatchUser(updateData, token);
 
-        assertThat(updateResponse.id()).isGreaterThan(0);
-        assertThat(updateResponse.username()).isEqualTo(fakerTestData.fakerUserFirstName);
-        assertThat(updateResponse.firstName()).isEqualTo("Tim42");
-        assertThat(updateResponse.lastName()).isEqualTo("Drob42");
+        verificationSteps.moreThan("id", updateResponse.id(), 0);
+        verificationSteps.shouldHaveValue("username", updateResponse.username(), fakerTestData.fakerUserFirstName);
+        verificationSteps.shouldHaveValue("first name", updateResponse.firstName(), firstName);
+        verificationSteps.shouldHaveValue("last name", updateResponse.lastName(), lastName);
     }
 }

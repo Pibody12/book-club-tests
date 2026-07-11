@@ -12,20 +12,19 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static java.lang.String.format;
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class UpdateClubTests extends TestBase {
 
     @Test
     @DisplayName("Изменение клуба")
     public void updateClub() {
-        RegistrationBodyModel registrationData =
-                new RegistrationBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
-        SuccessfulRegistrationResponseModel registryResponse = api.registre.registerUser(registrationData);
+        SuccessfulRegistrationResponseModel registryResponse = api.registre.registerUser(
+                new RegistrationBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword)
+        );
 
-        LoginBodyModel loginData =
-                new LoginBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
-        String accessToken = api.login.loginUserAndGetAccessToken(loginData);
+        String accessToken = api.login.loginUserAndGetAccessToken(
+                new LoginBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword)
+        );
         String token = format("Bearer %s", accessToken);
 
         CreateClubBodyModel clubData = new CreateClubBodyModel(
@@ -36,7 +35,6 @@ public class UpdateClubTests extends TestBase {
                 fakerTestData.fakerTelegramChatLink
         );
         SuccessfulCreateClubResponseModel responseCreateData = api.createClub.createClub(clubData, token);
-        Integer id = responseCreateData.id();
 
         UpdateClubBodyModel updateData = new UpdateClubBodyModel(
                 fakerTestData.fakerBookTitle,
@@ -46,17 +44,17 @@ public class UpdateClubTests extends TestBase {
                 fakerTestData.fakerTelegramChatLink
         );
 
-        SuccessfulUpdateClubResponseModel successfulUpdateData = api.updateClub.updateClub(updateData, token, id);
+        SuccessfulUpdateClubResponseModel respUpdateData = api.updateClub.updateClub(updateData, token, responseCreateData.id());
 
-        assertThat(successfulUpdateData.id()).isGreaterThan(0);
-        assertThat(successfulUpdateData.bookTitle()).isEqualTo(fakerTestData.fakerBookTitle);
-        assertThat(successfulUpdateData.bookAuthors()).isEqualTo(fakerTestData.fakerbookAuthors);
-        assertThat(successfulUpdateData.publicationYear()).isEqualTo(fakerTestData.fakerPublicationYear);
-        assertThat(successfulUpdateData.description()).isEqualTo(fakerTestData.fakerDescription);
-        assertThat(successfulUpdateData.telegramChatLink()).isEqualTo(fakerTestData.fakerTelegramChatLink);
-        assertThat(successfulUpdateData.owner()).isEqualTo(registryResponse.id());
-        assertThat(successfulUpdateData.members().get(0)).isEqualTo("" + registryResponse.id() + "");
-        assertThat(successfulUpdateData.created()).isNotEmpty();
-        assertThat(successfulUpdateData.modified()).isNotEmpty();
+        verificationSteps.moreThan("id", respUpdateData.id(), 0);
+        verificationSteps.shouldHaveValue("bookTitle", respUpdateData.bookTitle(), fakerTestData.fakerBookTitle);
+        verificationSteps.shouldHaveValue("bookAuthors", respUpdateData.bookAuthors(), fakerTestData.fakerbookAuthors);
+        verificationSteps.shouldHaveIntValue("year", respUpdateData.publicationYear(), fakerTestData.fakerPublicationYear);
+        verificationSteps.shouldHaveValue("description", respUpdateData.description(), fakerTestData.fakerDescription);
+        verificationSteps.shouldHaveValue("telegramChatLink", respUpdateData.telegramChatLink(), fakerTestData.fakerTelegramChatLink);
+        verificationSteps.shouldHaveIntValue("Owner", respUpdateData.owner(), registryResponse.id());
+        verificationSteps.shouldHaveValue("members", respUpdateData.members().get(0), "" + registryResponse.id() + "");
+        verificationSteps.isNotEmpty("created", respUpdateData.created());
+        verificationSteps.isNotEmpty("modified", respUpdateData.modified());
     }
 }

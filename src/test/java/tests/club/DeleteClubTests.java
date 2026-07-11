@@ -6,25 +6,24 @@ import models.club.create.SuccessfulCreateClubResponseModel;
 import models.club.get.GetDeletedClubResponseModel;
 import models.user.login.LoginBodyModel;
 import models.user.registration.RegistrationBodyModel;
-import models.user.registration.SuccessfulRegistrationResponseModel;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static java.lang.String.format;
+import static test_data.TestData.NO_CLUB_MESSAGE;
 
 public class DeleteClubTests extends TestBase {
 
     @Test
     @DisplayName("Удаление клуба")
     public void deleteClubTest() {
-        RegistrationBodyModel registrationData =
-                new RegistrationBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
-        SuccessfulRegistrationResponseModel registryResponse = api.registre.registerUser(registrationData);
+        api.registre.registerUser(
+                new RegistrationBodyModel (fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword)
+        );
 
-        LoginBodyModel loginData =
-                new LoginBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
-        String accessToken = api.login.loginUserAndGetAccessToken(loginData);
+        String accessToken = api.login.loginUserAndGetAccessToken(
+                new LoginBodyModel (fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword)
+        );
         String token = format("Bearer %s", accessToken);
 
         CreateClubBodyModel clubData = new CreateClubBodyModel(
@@ -36,13 +35,10 @@ public class DeleteClubTests extends TestBase {
         );
         SuccessfulCreateClubResponseModel createData = api.createClub.createClub(clubData, token);
 
-        Integer id = createData.id();
-        api.deleteClub.deleteClub(token, id);
+        api.deleteClub.deleteClub(token, createData.id());
 
-        GetDeletedClubResponseModel getResponse = api.getClub.getDeletedClub(token, id);
+        GetDeletedClubResponseModel getResponse = api.getClub.getDeletedClub(token, createData.id());
 
-        String expectedDetailError = "No Club matches the given query.";
-        String actualDetailError = getResponse.detail();
-        Assertions.assertEquals(expectedDetailError, actualDetailError);
+        verificationSteps.shouldHaveValue("detail", NO_CLUB_MESSAGE, getResponse.detail());
     }
 }

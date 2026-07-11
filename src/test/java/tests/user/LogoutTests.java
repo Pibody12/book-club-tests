@@ -10,7 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static java.lang.String.format;
-import static org.assertj.core.api.Assertions.assertThat;
+import static test_data.TestData.*;
 
 public class LogoutTests  extends TestBase {
 
@@ -35,12 +35,9 @@ public class LogoutTests  extends TestBase {
     @DisplayName("Ошибка в токене логаут")
     public void invalideRefreshTokenLogoutTest() {
 
-        String wrongRefreshToken = "wrongRefrshToken";
-        WrongRefreshTokenLogoutResponseModel logoutResponse = api.logout.wrongRefreshTokenLogout(wrongRefreshToken);
+        WrongRefreshTokenLogoutResponseModel logoutResponse = api.logout.wrongRefreshTokenLogout(WRONG_REFRESH_TOKEN);
 
-        String expectedError = "JSON parse error - unexpected character: line 1 column 1 (char 0)";
-        String actualError = logoutResponse.detail();
-        assertThat(actualError).isEqualTo(expectedError);
+        verificationSteps.shouldHaveValue("detail", logoutResponse.detail(), INVALIDE_REFRESH_TOKEN_MESSAGE);
     }
 
     @Test
@@ -49,9 +46,7 @@ public class LogoutTests  extends TestBase {
 
         EmptyBodyLogoutResponseModel logoutResponse = api.logout.emptyBodyLogout("");
 
-        String expectedError = "This field is required.";
-        String actualError = logoutResponse.refresh().getFirst();
-        assertThat(actualError).isEqualTo(expectedError);
+        verificationSteps.shouldHaveValue("Refresh", logoutResponse.refresh().getFirst(), REQUIRED_FIELD_MESSAGE);
     }
 
     @Test
@@ -61,8 +56,6 @@ public class LogoutTests  extends TestBase {
         String[] massiveToken = {"token1", "token2"};
         ListWithTwoTokenLogoutResponseModel logoutResponse = api.logout.otherTypeDataLogout(massiveToken);
 
-        String expectedError = "Invalid data. Expected a dictionary, but got list.";
-        String actualError = logoutResponse.nonFieldErrors().getFirst();
-        assertThat(actualError).isEqualTo(expectedError);
+        verificationSteps.shouldHaveValue("nonFieldErrors", logoutResponse.nonFieldErrors().getFirst(), INVALIDE_DATA_MESSAGE);
     }
 }
