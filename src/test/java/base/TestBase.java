@@ -1,6 +1,7 @@
 package base;
 
 import api.ApiClient;
+import com.codeborne.selenide.Configuration;
 import inspect.VerificationSteps;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeAll;
@@ -15,6 +16,7 @@ public class TestBase {
     @BeforeAll
     static public void setUp() {
         RestAssured.baseURI = "https://book-club.qa.guru/";
+        Configuration.browserSize = "1920x1080";
     }
 //    static public void setUp() { RestAssured.baseURI = "http://localhost:8100/";}
 }
