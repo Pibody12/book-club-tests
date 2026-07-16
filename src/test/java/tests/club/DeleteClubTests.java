@@ -18,20 +18,20 @@ public class DeleteClubTests extends TestBase {
     @DisplayName("Удаление клуба")
     public void deleteClubTest() {
         api.registre.registerUser(
-                new RegistrationBodyModel (fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword)
+                new RegistrationBodyModel (faker.fakerUserFirstName, faker.fakerPassword)
         );
 
         String accessToken = api.login.loginUserAndGetAccessToken(
-                new LoginBodyModel (fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword)
+                new LoginBodyModel (faker.fakerUserFirstName, faker.fakerPassword)
         );
         String token = format("Bearer %s", accessToken);
 
         CreateClubBodyModel clubData = new CreateClubBodyModel(
-                fakerTestData.fakerBookTitle,
-                fakerTestData.fakerbookAuthors,
-                fakerTestData.fakerPublicationYear,
-                fakerTestData.fakerDescription,
-                fakerTestData.fakerTelegramChatLink
+                faker.fakerBookTitle,
+                faker.fakerbookAuthors,
+                faker.fakerPublicationYear,
+                faker.fakerDescription,
+                faker.fakerTelegramChatLink
         );
         SuccessfulCreateClubResponseModel createData = api.createClub.createClub(clubData, token);
 

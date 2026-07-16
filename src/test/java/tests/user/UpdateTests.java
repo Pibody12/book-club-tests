@@ -16,18 +16,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class UpdateTests extends TestBase {
 
-    FakerTestData fakerTestData = new FakerTestData();
-
     @Test
     @DisplayName("Обновление всех данных пользователя")
     public void successfulPutUpdateTest(){
 
         api.registre.registerUser(
-                new RegistrationBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword)
+                new RegistrationBodyModel(faker.fakerUserFirstName, faker.fakerPassword)
         );
 
         String accessToken = api.login.loginUserAndGetAccessToken(
-                new LoginBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword)
+                new LoginBodyModel(faker.fakerUserFirstName, faker.fakerPassword)
         );
 
         String token = format("Bearer %s", accessToken);
@@ -36,13 +34,13 @@ public class UpdateTests extends TestBase {
         String email = "test@test.com";
 
         UpdatePutBodyModel updateData = new UpdatePutBodyModel(
-                fakerTestData.fakerUserFirstName, firstName, lastName, email);
+                faker.fakerUserFirstName, firstName, lastName, email);
 
         SuccessfulUpdatePutResponseModel updateResponse =
                 api.update.updatePutUser(updateData, token);
 
         verificationSteps.moreThan("id", updateResponse.id(), 0);
-        verificationSteps.shouldHaveValue("username", updateResponse.username(), fakerTestData.fakerUserFirstName);
+        verificationSteps.shouldHaveValue("username", updateResponse.username(), faker.fakerUserFirstName);
         verificationSteps.shouldHaveValue("first name", updateResponse.firstName(), firstName);
         verificationSteps.shouldHaveValue("last name", updateResponse.lastName(), lastName);
         verificationSteps.shouldHaveValue("email", updateResponse.email(), email);
@@ -53,11 +51,11 @@ public class UpdateTests extends TestBase {
     public void successfulPatchUpdateTest(){
 
         api.registre.registerUser(
-                new RegistrationBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword)
+                new RegistrationBodyModel(faker.fakerUserFirstName, faker.fakerPassword)
         );
 
         String accessToken =  api.login.loginUserAndGetAccessToken(
-                new LoginBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword)
+                new LoginBodyModel(faker.fakerUserFirstName, faker.fakerPassword)
         );
 
         String token = format("Bearer %s", accessToken);
@@ -68,7 +66,7 @@ public class UpdateTests extends TestBase {
         SuccessfulUpdatePatchResponseModel updateResponse = api.update.updatePatchUser(updateData, token);
 
         verificationSteps.moreThan("id", updateResponse.id(), 0);
-        verificationSteps.shouldHaveValue("username", updateResponse.username(), fakerTestData.fakerUserFirstName);
+        verificationSteps.shouldHaveValue("username", updateResponse.username(), faker.fakerUserFirstName);
         verificationSteps.shouldHaveValue("first name", updateResponse.firstName(), firstName);
         verificationSteps.shouldHaveValue("last name", updateResponse.lastName(), lastName);
     }

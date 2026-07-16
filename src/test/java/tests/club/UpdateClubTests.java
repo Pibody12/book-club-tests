@@ -19,39 +19,39 @@ public class UpdateClubTests extends TestBase {
     @DisplayName("Изменение клуба")
     public void updateClub() {
         SuccessfulRegistrationResponseModel registryResponse = api.registre.registerUser(
-                new RegistrationBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword)
+                new RegistrationBodyModel(faker.fakerUserFirstName, faker.fakerPassword)
         );
 
         String accessToken = api.login.loginUserAndGetAccessToken(
-                new LoginBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword)
+                new LoginBodyModel(faker.fakerUserFirstName, faker.fakerPassword)
         );
         String token = format("Bearer %s", accessToken);
 
         CreateClubBodyModel clubData = new CreateClubBodyModel(
-                fakerTestData.fakerBookTitle,
-                fakerTestData.fakerbookAuthors,
-                fakerTestData.fakerPublicationYear,
-                fakerTestData.fakerDescription,
-                fakerTestData.fakerTelegramChatLink
+                faker.fakerBookTitle,
+                faker.fakerbookAuthors,
+                faker.fakerPublicationYear,
+                faker.fakerDescription,
+                faker.fakerTelegramChatLink
         );
         SuccessfulCreateClubResponseModel responseCreateData = api.createClub.createClub(clubData, token);
 
         UpdateClubBodyModel updateData = new UpdateClubBodyModel(
-                fakerTestData.fakerBookTitle,
-                fakerTestData.fakerbookAuthors,
-                fakerTestData.fakerPublicationYear,
-                fakerTestData.fakerDescription,
-                fakerTestData.fakerTelegramChatLink
+                faker.fakerBookTitle,
+                faker.fakerbookAuthors,
+                faker.fakerPublicationYear,
+                faker.fakerDescription,
+                faker.fakerTelegramChatLink
         );
 
         SuccessfulUpdateClubResponseModel respUpdateData = api.updateClub.updateClub(updateData, token, responseCreateData.id());
 
         verificationSteps.moreThan("id", respUpdateData.id(), 0);
-        verificationSteps.shouldHaveValue("bookTitle", respUpdateData.bookTitle(), fakerTestData.fakerBookTitle);
-        verificationSteps.shouldHaveValue("bookAuthors", respUpdateData.bookAuthors(), fakerTestData.fakerbookAuthors);
-        verificationSteps.shouldHaveIntValue("year", respUpdateData.publicationYear(), fakerTestData.fakerPublicationYear);
-        verificationSteps.shouldHaveValue("description", respUpdateData.description(), fakerTestData.fakerDescription);
-        verificationSteps.shouldHaveValue("telegramChatLink", respUpdateData.telegramChatLink(), fakerTestData.fakerTelegramChatLink);
+        verificationSteps.shouldHaveValue("bookTitle", respUpdateData.bookTitle(), faker.fakerBookTitle);
+        verificationSteps.shouldHaveValue("bookAuthors", respUpdateData.bookAuthors(), faker.fakerbookAuthors);
+        verificationSteps.shouldHaveIntValue("year", respUpdateData.publicationYear(), faker.fakerPublicationYear);
+        verificationSteps.shouldHaveValue("description", respUpdateData.description(), faker.fakerDescription);
+        verificationSteps.shouldHaveValue("telegramChatLink", respUpdateData.telegramChatLink(), faker.fakerTelegramChatLink);
         verificationSteps.shouldHaveIntValue("Owner", respUpdateData.owner(), registryResponse.id());
         verificationSteps.shouldHaveValue("members", respUpdateData.members().get(0), "" + registryResponse.id() + "");
         verificationSteps.isNotEmpty("created", respUpdateData.created());

@@ -17,15 +17,14 @@ public class LoginTests extends TestBase {
     @DisplayName("Успешная авторизация")
     public void successfulLoginTest(){
 
-        RegistrationBodyModel registrationData = new RegistrationBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
+        RegistrationBodyModel registrationData = new RegistrationBodyModel(faker.fakerUserFirstName, faker.fakerPassword);
         api.registre.registerUser(registrationData);
 
-        LoginBodyModel loginData = new LoginBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
+        LoginBodyModel loginData = new LoginBodyModel(faker.fakerUserFirstName, faker.fakerPassword);
         SuccessfulLoginResponseModel loginResponse = api.login.loginUser(loginData);
 
         String actualAccess = loginResponse.access();
         String actualRefresh = loginResponse.refresh();
-
 
         verificationSteps.shouldHaveBegin("Access token", actualAccess, PREFIX_TOKEN);
         verificationSteps.shouldHaveBegin("Refresh token", actualRefresh, PREFIX_TOKEN);
@@ -37,11 +36,11 @@ public class LoginTests extends TestBase {
     public void wrongCredentialsLoginTest(){
 
         api.registre.registerUser(
-                new RegistrationBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword)
+                new RegistrationBodyModel(faker.fakerUserFirstName, faker.fakerPassword)
         );
 
         WrongCredetialsLoginResponseModel loginResponse = api.login.wrongPasswordLogin(
-                new LoginBodyModel(fakerTestData.fakerUserFirstName, wrongPassword)
+                new LoginBodyModel(faker.fakerUserFirstName, wrongPassword)
         );
 
         verificationSteps.shouldHaveBegin("Detail", loginResponse.detail(), INVALIDE_CREDLS);

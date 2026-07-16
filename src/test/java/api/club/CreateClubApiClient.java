@@ -12,7 +12,7 @@ public class CreateClubApiClient {
     @Step("Создание клуба")
     public SuccessfulCreateClubResponseModel createClub(Object clubData, String token) {
         return given(baseRequestSpec)
-                .headers("Authorization", token)
+                .header("Authorization", "Bearer " + token)
                 .body(clubData)
                 .when()
                 .post("/clubs/")

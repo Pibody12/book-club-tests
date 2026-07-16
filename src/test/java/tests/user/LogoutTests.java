@@ -19,11 +19,11 @@ public class LogoutTests  extends TestBase {
     public void successfulLogoutTest() {
 
         RegistrationBodyModel registrationData =
-                new RegistrationBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
+                new RegistrationBodyModel(faker.fakerUserFirstName, faker.fakerPassword);
         api.registre.registerUser(registrationData);
 
         LoginBodyModel loginData =
-                new LoginBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
+                new LoginBodyModel(faker.fakerUserFirstName, faker.fakerPassword);
         String refreshToken = api.login.loginUserAndGetRefreshToken(loginData);
 
 

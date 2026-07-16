@@ -14,7 +14,7 @@ public static ResponseSpecification successfulCreateClubResponseSpec =
             .log(ALL)
             .expectStatusCode(201)
             .expectBody(matchesJsonSchemaInClasspath(
-                    "schemas/club/successfull_create_club_response_schema.json"))
+                    "schemas/club/successful_create_club_response_schema.json"))
             .expectBody("id", notNullValue())
             .expectBody("bookTitle", notNullValue())
             .expectBody("bookAuthors", notNullValue())

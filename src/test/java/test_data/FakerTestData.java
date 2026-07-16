@@ -11,8 +11,8 @@ public class FakerTestData {
             fakerUserFirstName = faker.name().firstName(),
             fakerInvalideName = faker.name().fullName(),
             fakerPassword = String.valueOf(faker.random().nextInt(9999999)),
-            fakerBookTitle = faker.commerce().productName(),
-            fakerbookAuthors = faker.name().fullName(),
+            fakerBookTitle = faker.book().title(),
+            fakerbookAuthors = faker.book().author(),
             fakerDescription = faker.chuckNorris().fact(),
             fakerTelegramChatLink = "https://t.me/" + faker.name().firstName();
 

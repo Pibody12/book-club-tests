@@ -14,11 +14,11 @@ public class RegistrationTests extends TestBase {
     public void successfulRegistrationTest(){
 
         SuccessfulRegistrationResponseModel registrationResponse = api.registre.registerUser(
-                new RegistrationBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword)
+                new RegistrationBodyModel(faker.fakerUserFirstName, faker.fakerPassword)
         );
 
         verificationSteps.moreThan("id", registrationResponse.id(), 0);
-        verificationSteps.shouldHaveValue("username", registrationResponse.username(), fakerTestData.fakerUserFirstName);
+        verificationSteps.shouldHaveValue("username", registrationResponse.username(), faker.fakerUserFirstName);
         verificationSteps.shouldHaveEmptyValue("firstName", registrationResponse.firstName());
         verificationSteps.shouldHaveEmptyValue("lastName", registrationResponse.lastName());
         verificationSteps.shouldHaveEmptyValue("email", registrationResponse.email());
@@ -31,11 +31,11 @@ public class RegistrationTests extends TestBase {
     public void existingUserWrongRegistrationTest(){
 
         RegistrationBodyModel registrationData =
-                new RegistrationBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword);
+                new RegistrationBodyModel(faker.fakerUserFirstName, faker.fakerPassword);
 
         SuccessfulRegistrationResponseModel firstRegistrationResponse = api.registre.registerUser(registrationData);
 
-        verificationSteps.shouldHaveValue("username", firstRegistrationResponse.username(), fakerTestData.fakerUserFirstName);
+        verificationSteps.shouldHaveValue("username", firstRegistrationResponse.username(), faker.fakerUserFirstName);
 
         ExistingUserResponseModel secondRegistrationResponse = api.registre.registerExistingUser(registrationData);
 
@@ -59,7 +59,7 @@ public class RegistrationTests extends TestBase {
     public void invalideUsernameRegistrationTest(){
 
         InvalideNameResponseModel registrationResponse = api.registre.registerInvalideData(
-                new RegistrationBodyModel(fakerTestData.fakerInvalideName, fakerTestData.fakerPassword)
+                new RegistrationBodyModel(faker.fakerInvalideName, faker.fakerPassword)
         );
 
         verificationSteps.shouldHaveValue("username", registrationResponse.username().getFirst(), INVALIDE_USERNAME);

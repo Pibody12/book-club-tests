@@ -18,30 +18,28 @@ public class CreateClubTests extends TestBase {
     @DisplayName("Создание клуба")
     public void createClubTest() {
         SuccessfulRegistrationResponseModel registryResponse = api.registre.registerUser(
-                new RegistrationBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword)
+                new RegistrationBodyModel(faker.fakerUserFirstName, faker.fakerPassword)
         );
 
         String accessToken = api.login.loginUserAndGetAccessToken(
-                new LoginBodyModel(fakerTestData.fakerUserFirstName, fakerTestData.fakerPassword)
+                new LoginBodyModel(faker.fakerUserFirstName, faker.fakerPassword)
         );
-        String token = format("Bearer %s", accessToken);
 
         CreateClubBodyModel clubData = new CreateClubBodyModel(
-                fakerTestData.fakerBookTitle,
-                fakerTestData.fakerbookAuthors,
-                fakerTestData.fakerPublicationYear,
-                fakerTestData.fakerDescription,
-                fakerTestData.fakerTelegramChatLink
+                faker.fakerBookTitle,
+                faker.fakerbookAuthors,
+                faker.fakerPublicationYear,
+                faker.fakerDescription,
+                faker.fakerTelegramChatLink
         );
-        SuccessfulCreateClubResponseModel responseData = api.createClub.createClub(clubData, token);
-
+        SuccessfulCreateClubResponseModel responseData = api.createClub.createClub(clubData, accessToken);
 
         verificationSteps.moreThan("id", responseData.id(), 0);
-        verificationSteps.shouldHaveValue("bookTitle", responseData.bookTitle(), fakerTestData.fakerBookTitle);
-        verificationSteps.shouldHaveValue("bookAuthors", responseData.bookAuthors(), fakerTestData.fakerbookAuthors);
-        verificationSteps.shouldHaveIntValue("publicationYear", responseData.publicationYear(), fakerTestData.fakerPublicationYear);
-        verificationSteps.shouldHaveValue("description", responseData.description(), fakerTestData.fakerDescription);
-        verificationSteps.shouldHaveValue("telegramChatLink", responseData.telegramChatLink(), fakerTestData.fakerTelegramChatLink);
+        verificationSteps.shouldHaveValue("bookTitle", responseData.bookTitle(), faker.fakerBookTitle);
+        verificationSteps.shouldHaveValue("bookAuthors", responseData.bookAuthors(), faker.fakerbookAuthors);
+        verificationSteps.shouldHaveIntValue("publicationYear", responseData.publicationYear(), faker.fakerPublicationYear);
+        verificationSteps.shouldHaveValue("description", responseData.description(), faker.fakerDescription);
+        verificationSteps.shouldHaveValue("telegramChatLink", responseData.telegramChatLink(), faker.fakerTelegramChatLink);
         verificationSteps.shouldHaveIntValue("Owner", responseData.owner(), registryResponse.id());
         verificationSteps.shouldHaveValue("members", responseData.members().get(0), "" + registryResponse.id() + "");
         verificationSteps.isNotEmpty("created", responseData.created());
