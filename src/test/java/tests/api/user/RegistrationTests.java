@@ -1,4 +1,4 @@
-package tests.user;
+package tests.api.user;
 
 import base.TestBase;
 import models.user.registration.*;

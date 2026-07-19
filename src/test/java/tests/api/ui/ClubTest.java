@@ -1,4 +1,4 @@
-package tests;
+package tests.api.ui;
 
 import base.TestBase;
 import models.club.create.CreateClubBodyModel;
@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
-import static com.codeborne.selenide.Selenide.open;
 
 public class ClubTest extends TestBase {
 
@@ -21,7 +20,7 @@ public class ClubTest extends TestBase {
     String passwordName = "qweasd";
 
     @Test
-    public void cantLeaveClubAsAdminTest(){
+    public void cantLeaveClubAsOwnerTest(){
         // register user
         SuccessfulRegistrationResponseModel registrationResponse = api.registre.registerUser(
                 new RegistrationBodyModel(faker.fakerUserFirstName, faker.fakerPassword));
@@ -69,12 +68,12 @@ public class ClubTest extends TestBase {
         open("/favicon.ico");
         localStorage().setItem("book_club_auth", localstorageAuthBody);
         //find club
-        open("");
-        $(".search-input").setValue(faker.fakerBookTitle);
-        $(".search-button").click();
+        open("/clubs/" + responseData.id());
+//        $(".search-input").setValue(faker.fakerBookTitle);
+//        $(".search-button").click();
 
         //open club
-        $(".clubs-list").$(byText(faker.fakerBookTitle)).parent().parent().$(".club-footer button").click();
+//        $(".clubs-list").$(byText(faker.fakerBookTitle)).parent().parent().$(".club-footer button").click();
 
         //wrong leave club
         $(".club-content").shouldBe(visible);

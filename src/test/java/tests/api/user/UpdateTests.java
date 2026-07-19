@@ -1,4 +1,4 @@
-package tests.user;
+package tests.api.user;
 
 import base.TestBase;
 import models.user.login.LoginBodyModel;
@@ -9,7 +9,6 @@ import models.user.update.UpdatePatchBodyModel;
 import models.user.update.UpdatePutBodyModel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import test_data.FakerTestData;
 
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;

@@ -16,9 +16,11 @@ public class TestBase {
     @BeforeAll
     static public void setUp() {
         RestAssured.baseURI = "https://book-club.qa.guru/";
+//        RestAssured.baseURI = "http://localhost:8100/";
         RestAssured.basePath = "/api/v1";
 
         Configuration.baseUrl = "https://book-club.qa.guru";
+//        Configuration.baseUrl = "http://localhost:8100/";
         Configuration.browserSize = "1920x1080";
 
     }
