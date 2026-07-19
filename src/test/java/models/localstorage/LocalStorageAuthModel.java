@@ -1,6 +1,25 @@
 package models.localstorage;
 
-import java.util.List;
 
-public record LocalStorageAuthModel() {
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JacksonException;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import models.user.registration.SuccessfulRegistrationResponseModel;
+
+public record LocalStorageAuthModel(
+        @JsonProperty("user") SuccessfulRegistrationResponseModel registrationResponse,
+        @JsonProperty("accessToken") String accessToken,
+        @JsonProperty("refreshToken") String refreshToken,
+        @JsonProperty("isAuthenticated") boolean isAuthenticated
+) {
+
+    private static final JsonMapper JSON = JsonMapper.builder().build();
+
+    public String toJson() {
+        try {
+            return JSON.writeValueAsString(this);
+        } catch (JacksonException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

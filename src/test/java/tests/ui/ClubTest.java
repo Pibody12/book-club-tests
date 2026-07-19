@@ -1,8 +1,9 @@
-package tests.api.ui;
+package tests.ui;
 
 import base.TestBase;
 import models.club.create.CreateClubBodyModel;
 import models.club.create.SuccessfulCreateClubResponseModel;
+import models.localstorage.LocalStorageAuthModel;
 import models.user.login.LoginBodyModel;
 import models.user.login.SuccessfulLoginResponseModel;
 import models.user.registration.RegistrationBodyModel;
@@ -31,30 +32,7 @@ public class ClubTest extends TestBase {
         String accessToken = loginResponse.access();
         String refreshToken = loginResponse.refresh();
 
-        String localstorageAuthBody = """
-                {
-                  "user": {
-                    "id": %d,
-                    "username": "%s",
-                    "firstName": "%s",
-                    "lastName": "%s",
-                    "email": "%s",
-                    "remoteAddr": "%s"
-                 },
-                 "accessToken": "%s",
-                 "refreshToken": "%s",
-                 "isAuthenticated": true
-                }
-                """.formatted(
-                registrationResponse.id(),
-                registrationResponse.username(),
-                registrationResponse.firstName(),
-                registrationResponse.lastName(),
-                registrationResponse.email(),
-                registrationResponse.remoteAddr(),
-                accessToken,
-                refreshToken
-        );
+        String localstorageAuthBody = new LocalStorageAuthModel(registrationResponse, accessToken, refreshToken, true).toJson();
 
         CreateClubBodyModel clubData = new CreateClubBodyModel(
                 faker.fakerBookTitle,
@@ -63,17 +41,12 @@ public class ClubTest extends TestBase {
                 faker.fakerDescription,
                 faker.fakerTelegramChatLink
         );
+
         SuccessfulCreateClubResponseModel responseData = api.createClub.createClub(clubData, accessToken);
 
         open("/favicon.ico");
         localStorage().setItem("book_club_auth", localstorageAuthBody);
-        //find club
         open("/clubs/" + responseData.id());
-//        $(".search-input").setValue(faker.fakerBookTitle);
-//        $(".search-button").click();
-
-        //open club
-//        $(".clubs-list").$(byText(faker.fakerBookTitle)).parent().parent().$(".club-footer button").click();
 
         //wrong leave club
         $(".club-content").shouldBe(visible);

@@ -1,4 +1,4 @@
-package tests.club;
+package tests.api.club;
 
 import base.TestBase;
 import models.club.create.CreateClubBodyModel;
