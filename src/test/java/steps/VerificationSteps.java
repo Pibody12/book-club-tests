@@ -1,4 +1,4 @@
-package inspect;
+package steps;
 
 import io.qameta.allure.Step;
 

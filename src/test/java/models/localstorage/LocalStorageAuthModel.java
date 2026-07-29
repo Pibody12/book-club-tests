@@ -4,10 +4,10 @@ package models.localstorage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import models.user.registration.SuccessfulRegistrationResponseModel;
+import models.user.SuccessfulRegistrationAndGetResponseModel;
 
 public record LocalStorageAuthModel(
-        @JsonProperty("user") SuccessfulRegistrationResponseModel registrationResponse,
+        @JsonProperty("user") SuccessfulRegistrationAndGetResponseModel registrationResponse,
         @JsonProperty("accessToken") String accessToken,
         @JsonProperty("refreshToken") String refreshToken,
         @JsonProperty("isAuthenticated") boolean isAuthenticated

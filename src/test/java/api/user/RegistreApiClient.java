@@ -4,7 +4,7 @@ import io.qameta.allure.Step;
 import models.user.registration.EmptyRegistrationsDataResponseModel;
 import models.user.registration.ExistingUserResponseModel;
 import models.user.registration.InvalideNameResponseModel;
-import models.user.registration.SuccessfulRegistrationResponseModel;
+import models.user.SuccessfulRegistrationAndGetResponseModel;
 
 import static io.restassured.RestAssured.given;
 import static specs.BaseSpec.baseRequestSpec;
@@ -13,14 +13,14 @@ import static specs.user.RegistrationSpec.*;
 public class RegistreApiClient {
 
     @Step("Регистрация пользователя")
-    public SuccessfulRegistrationResponseModel registerUser(Object registrationData) {
+    public SuccessfulRegistrationAndGetResponseModel registerUser(Object registrationData) {
         return given(baseRequestSpec)
                 .body(registrationData)
                 .when()
                 .post("/users/register/")
                 .then()
                 .spec(successfulRegistrationResponseSpec)
-                .extract().body().as(SuccessfulRegistrationResponseModel.class);
+                .extract().body().as(SuccessfulRegistrationAndGetResponseModel.class);
     }
 
     @Step("Регистрация с данными существующего пользователя")

@@ -5,7 +5,7 @@ import models.club.create.CreateClubBodyModel;
 import models.club.create.SuccessfulCreateClubResponseModel;
 import models.user.login.LoginBodyModel;
 import models.user.registration.RegistrationBodyModel;
-import models.user.registration.SuccessfulRegistrationResponseModel;
+import models.user.SuccessfulRegistrationAndGetResponseModel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +17,7 @@ public class CreateClubTests extends TestBase {
     @Test
     @DisplayName("Создание клуба")
     public void createClubTest() {
-        SuccessfulRegistrationResponseModel registryResponse = api.registre.registerUser(
+        SuccessfulRegistrationAndGetResponseModel registryResponse = api.registre.registerUser(
                 new RegistrationBodyModel(faker.fakerUserFirstName, faker.fakerPassword)
         );
 

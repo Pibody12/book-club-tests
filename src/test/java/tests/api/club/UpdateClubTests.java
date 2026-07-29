@@ -7,7 +7,7 @@ import models.club.update.SuccessfulUpdateClubResponseModel;
 import models.club.update.UpdateClubBodyModel;
 import models.user.login.LoginBodyModel;
 import models.user.registration.RegistrationBodyModel;
-import models.user.registration.SuccessfulRegistrationResponseModel;
+import models.user.SuccessfulRegistrationAndGetResponseModel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +18,7 @@ public class UpdateClubTests extends TestBase {
     @Test
     @DisplayName("Изменение клуба")
     public void updateClub() {
-        SuccessfulRegistrationResponseModel registryResponse = api.registre.registerUser(
+        SuccessfulRegistrationAndGetResponseModel registryResponse = api.registre.registerUser(
                 new RegistrationBodyModel(faker.fakerUserFirstName, faker.fakerPassword)
         );
 

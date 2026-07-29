@@ -2,16 +2,27 @@ package base;
 
 import api.ApiClient;
 import com.codeborne.selenide.Configuration;
-import inspect.VerificationSteps;
+import com.codeborne.selenide.Selenide;
+import pages.*;
+import steps.GeneralSteps;
+import steps.VerificationSteps;
 import io.restassured.RestAssured;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import test_data.FakerTestData;
 
 public class TestBase {
 
+    public MainPage mainPage = new MainPage();
+    public RegistrationPage regPage = new RegistrationPage();
+    public LoginPage loginPage = new LoginPage();
+    public CreateClubPage createClubPage = new CreateClubPage();
+    public ClubsPage clubsPage = new ClubsPage();
+
     protected static final ApiClient api = new ApiClient();
     protected static final FakerTestData faker = new FakerTestData();
     protected static final VerificationSteps verificationSteps = new VerificationSteps();
+    protected static final GeneralSteps generalSteps = new GeneralSteps();
 
     @BeforeAll
     static public void setUp() {
@@ -24,5 +35,9 @@ public class TestBase {
         Configuration.browserSize = "1920x1080";
 
     }
-//    static public void setUp() { RestAssured.baseURI = "http://localhost:8100/";}
+
+    @AfterEach
+    void tearDown() {
+        Selenide.closeWebDriver();
+    }
 }

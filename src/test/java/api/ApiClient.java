@@ -1,14 +1,8 @@
 package api;
 
 
-import api.club.CreateClubApiClient;
-import api.club.DeleteClubApiClient;
-import api.club.GetClubApiClient;
-import api.club.UpdateClubApiClient;
-import api.user.LoginApiClient;
-import api.user.LogoutApiClient;
-import api.user.RegistreApiClient;
-import api.user.UpdateApiClient;
+import api.club.*;
+import api.user.*;
 
 /**
  * Общий API-клиент — единая точка доступа к клиентам эндпоинтов.
@@ -21,5 +15,8 @@ public class ApiClient {
     public final CreateClubApiClient createClub = new CreateClubApiClient();
     public final UpdateClubApiClient updateClub = new UpdateClubApiClient();
     public final DeleteClubApiClient deleteClub = new DeleteClubApiClient();
+    public final JoinClubApiClient joinClub = new JoinClubApiClient();
     public final GetClubApiClient getClub = new GetClubApiClient();
+    public final GetUserApiClient getUser = new GetUserApiClient();
+
 }

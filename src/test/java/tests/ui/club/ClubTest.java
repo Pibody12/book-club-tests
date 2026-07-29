@@ -1,4 +1,4 @@
-package tests.ui;
+package tests.ui.club;
 
 import base.TestBase;
 import models.club.create.CreateClubBodyModel;
@@ -7,7 +7,7 @@ import models.localstorage.LocalStorageAuthModel;
 import models.user.login.LoginBodyModel;
 import models.user.login.SuccessfulLoginResponseModel;
 import models.user.registration.RegistrationBodyModel;
-import models.user.registration.SuccessfulRegistrationResponseModel;
+import models.user.SuccessfulRegistrationAndGetResponseModel;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -17,13 +17,10 @@ import static com.codeborne.selenide.Selenide.*;
 
 public class ClubTest extends TestBase {
 
-    String userName = "Tim4224";
-    String passwordName = "qweasd";
-
     @Test
-    public void cantLeaveClubAsOwnerTest(){
+    public void cantLeaveClubAsOwnerTest2(){
         // register user
-        SuccessfulRegistrationResponseModel registrationResponse = api.registre.registerUser(
+        SuccessfulRegistrationAndGetResponseModel registrationResponse = api.registre.registerUser(
                 new RegistrationBodyModel(faker.fakerUserFirstName, faker.fakerPassword));
         // login user
         SuccessfulLoginResponseModel loginResponse = api.login.loginUser(
@@ -59,7 +56,7 @@ public class ClubTest extends TestBase {
     @Disabled
     public void cantLeaveClubAsAdminTest_with_login_by_api(){
         // register user
-        SuccessfulRegistrationResponseModel registrationResponse = api.registre.registerUser(
+        SuccessfulRegistrationAndGetResponseModel registrationResponse = api.registre.registerUser(
                 new RegistrationBodyModel(faker.fakerUserFirstName, faker.fakerPassword));
         // login user
         SuccessfulLoginResponseModel loginResponse = api.login.loginUser(

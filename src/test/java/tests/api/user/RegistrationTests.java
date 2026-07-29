@@ -1,6 +1,7 @@
 package tests.api.user;
 
 import base.TestBase;
+import models.user.SuccessfulRegistrationAndGetResponseModel;
 import models.user.registration.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,7 +14,7 @@ public class RegistrationTests extends TestBase {
     @DisplayName("Успешная регистрация")
     public void successfulRegistrationTest(){
 
-        SuccessfulRegistrationResponseModel registrationResponse = api.registre.registerUser(
+        SuccessfulRegistrationAndGetResponseModel registrationResponse = api.registre.registerUser(
                 new RegistrationBodyModel(faker.fakerUserFirstName, faker.fakerPassword)
         );
 
@@ -33,7 +34,7 @@ public class RegistrationTests extends TestBase {
         RegistrationBodyModel registrationData =
                 new RegistrationBodyModel(faker.fakerUserFirstName, faker.fakerPassword);
 
-        SuccessfulRegistrationResponseModel firstRegistrationResponse = api.registre.registerUser(registrationData);
+        SuccessfulRegistrationAndGetResponseModel firstRegistrationResponse = api.registre.registerUser(registrationData);
 
         verificationSteps.shouldHaveValue("username", firstRegistrationResponse.username(), faker.fakerUserFirstName);
 
