@@ -2,6 +2,10 @@ package test_data;
 
 public class TestData {
 
+    // credentials
+    public static final String USERNAME = "Tim42";
+    public static final String PASSWORD = "qweasd";
+
     // variable
     public static final String PREFIX_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9";
     public static final String ipAddrRegexp = "^((25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.){3}"

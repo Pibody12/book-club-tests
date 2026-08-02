@@ -1,0 +1,28 @@
+package specs.reviews;
+
+import io.restassured.builder.ResponseSpecBuilder;
+import io.restassured.specification.ResponseSpecification;
+
+import static io.restassured.filter.log.LogDetail.ALL;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
+import static org.hamcrest.Matchers.*;
+
+public class AddReviewsSpec {
+
+    public static ResponseSpecification successfulAddReviewsSpec =
+            new ResponseSpecBuilder()
+                    .log(ALL)
+                    .expectStatusCode(201)
+                    .expectBody(matchesJsonSchemaInClasspath(
+                            "schemas/reviews/successful_add_reviews_response_schema.json"))
+                    .expectBody("id", notNullValue())
+                    .expectBody("club", notNullValue())
+                    .expectBody("user.id", notNullValue())
+                    .expectBody("user.username", notNullValue())
+                    .expectBody("review", notNullValue())
+                    .expectBody("assessment", notNullValue())
+                    .expectBody("readPages", notNullValue())
+                    .expectBody("created", notNullValue())
+                    .expectBody("modified", nullValue())
+                    .build();
+}

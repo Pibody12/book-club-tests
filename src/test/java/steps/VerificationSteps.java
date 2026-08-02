@@ -41,7 +41,7 @@ public class VerificationSteps {
         assertThat(actual).isNotEmpty();
     }
 
-    @Step("Проверка, что \"{fieldName}\" не пустое")
+    @Step("Проверка, что \"{fieldName}\" NUll")
     public void isNull(String fieldName, Boolean actual) {
         assertThat(actual).isNull();
     }

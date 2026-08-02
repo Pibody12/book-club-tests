@@ -2,6 +2,7 @@ package api;
 
 
 import api.club.*;
+import api.reviews.AddReviewApiClient;
 import api.user.*;
 
 /**
@@ -16,6 +17,7 @@ public class ApiClient {
     public final UpdateClubApiClient updateClub = new UpdateClubApiClient();
     public final DeleteClubApiClient deleteClub = new DeleteClubApiClient();
     public final JoinClubApiClient joinClub = new JoinClubApiClient();
+    public final AddReviewApiClient addReviews = new AddReviewApiClient();
     public final GetClubApiClient getClub = new GetClubApiClient();
     public final GetUserApiClient getUser = new GetUserApiClient();
 

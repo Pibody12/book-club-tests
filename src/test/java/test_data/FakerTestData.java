@@ -17,5 +17,7 @@ public class FakerTestData {
             fakerTelegramChatLink = "https://t.me/" + faker.name().firstName();
 
     public Integer
-            fakerPublicationYear = faker.random().nextInt(1800, 2026);
+            fakerPublicationYear = faker.random().nextInt(1800, 2026),
+            fakerAssessment = faker.random().nextInt(1, 5),
+            fakerReadPages = faker.random().nextInt(20, 70);
 }
