@@ -25,4 +25,15 @@ public class AddReviewsSpec {
                     .expectBody("created", notNullValue())
                     .expectBody("modified", nullValue())
                     .build();
+
+    public static ResponseSpecification addWrongReviewsSpec =
+            new ResponseSpecBuilder()
+                    .log(ALL)
+                    .expectStatusCode(400)
+                    .expectBody(matchesJsonSchemaInClasspath(
+                            "schemas/reviews/add_wrong_reviews_schema.json"))
+                    .expectBody("club", notNullValue())
+                    .expectBody("review", notNullValue())
+                    .expectBody("assessment", notNullValue())
+                    .build();
 }
