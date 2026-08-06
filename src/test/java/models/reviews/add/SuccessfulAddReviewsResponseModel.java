@@ -1,6 +1,6 @@
-package models.reviews;
+package models.reviews.add;
 
-import java.time.OffsetDateTime;
+import models.reviews.UserModel;
 
 public record SuccessfulAddReviewsResponseModel(
         Integer id,

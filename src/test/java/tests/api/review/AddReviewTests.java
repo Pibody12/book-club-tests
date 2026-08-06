@@ -3,9 +3,9 @@ package tests.api.review;
 import base.TestBase;
 import models.club.create.CreateClubBodyModel;
 import models.club.create.SuccessfulCreateClubResponseModel;
-import models.reviews.AddReviewBodyModel;
-import models.reviews.SuccessfulAddReviewsResponseModel;
-import models.reviews.WrongReviewDataModel;
+import models.reviews.add.AddReviewBodyModel;
+import models.reviews.add.SuccessfulAddReviewsResponseModel;
+import models.reviews.add.WrongReviewDataResponseModel;
 import models.user.SuccessfulRegistrationAndGetResponseModel;
 import models.user.login.LoginBodyModel;
 import models.user.registration.RegistrationBodyModel;
@@ -18,7 +18,7 @@ public class AddReviewTests extends TestBase {
 
     @Test
     @DisplayName("Добавление комментария создателем клуба")
-    public void addOwnerReview () {
+    public void addOwnerCLubReviewTest () {
         String accessToken = api.login.loginUserAndGetAccessToken(
                 new LoginBodyModel(USERNAME, PASSWORD)
         );
@@ -54,7 +54,7 @@ public class AddReviewTests extends TestBase {
 
     @Test
     @DisplayName("Добавление комментария клубу под гостем")
-    public void addGuestReview () {
+    public void addGuestClubReviewTest () {
         String accessOwnerToken = api.login.loginUserAndGetAccessToken(
                 new LoginBodyModel(USERNAME, PASSWORD)
         );
@@ -98,7 +98,7 @@ public class AddReviewTests extends TestBase {
 
     @Test
     @DisplayName("Передача не валидного body комментария")
-    public void addInvalideReview () {
+    public void addInvalideReviewTest () {
         String accessToken = api.login.loginUserAndGetAccessToken(
                 new LoginBodyModel(USERNAME, PASSWORD)
         );
@@ -110,7 +110,7 @@ public class AddReviewTests extends TestBase {
                 0
         );
 
-        WrongReviewDataModel addWrongReviewsResponse = api.addReviews.addWrongReview(reviewData, accessToken);
+        WrongReviewDataResponseModel addWrongReviewsResponse = api.addReviews.addWrongReview(reviewData, accessToken);
 
         verificationSteps.shouldHaveValue("club", addWrongReviewsResponse.club().getFirst(), INVALIDE_ID_CLUB_MESSAGE);
         verificationSteps.shouldHaveValue("review", addWrongReviewsResponse.review().getFirst(), EMPTY_FIELD_REVIEWS_MESSAGE);

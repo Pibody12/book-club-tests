@@ -1,4 +1,4 @@
-package models.reviews;
+package models.reviews.add;
 
 public record AddReviewBodyModel (
         Integer club,

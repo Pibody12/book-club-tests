@@ -1,8 +1,8 @@
 package api.reviews;
 
 import io.qameta.allure.Step;
-import models.reviews.SuccessfulAddReviewsResponseModel;
-import models.reviews.WrongReviewDataModel;
+import models.reviews.add.SuccessfulAddReviewsResponseModel;
+import models.reviews.add.WrongReviewDataResponseModel;
 
 import static io.restassured.RestAssured.given;
 import static specs.BaseSpec.baseRequestSpec;
@@ -24,7 +24,7 @@ public class AddReviewApiClient {
     }
 
     @Step("Добавление отзыва")
-    public WrongReviewDataModel addWrongReview (Object reviewData, String token) {
+    public WrongReviewDataResponseModel addWrongReview (Object reviewData, String token) {
         return given(baseRequestSpec)
                 .header("Authorization", "Bearer " + token)
                 .body(reviewData)
@@ -32,6 +32,6 @@ public class AddReviewApiClient {
                 .post("/clubs/reviews/")
                 .then()
                 .spec(addWrongReviewsSpec)
-                .extract().body().as(WrongReviewDataModel.class);
+                .extract().body().as(WrongReviewDataResponseModel.class);
     }
 }
