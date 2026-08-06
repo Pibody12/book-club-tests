@@ -63,7 +63,7 @@ public class UpdateReviewTests extends TestBase {
     }
 
     @Test
-    @DisplayName("Обновление всех полей комментария")
+    @DisplayName("Обновление оценки в комментарии")
     public void updateAssessmentReviewTest () {
         String accessToken = api.login.loginUserAndGetAccessToken(
                 new LoginBodyModel(USERNAME, PASSWORD)

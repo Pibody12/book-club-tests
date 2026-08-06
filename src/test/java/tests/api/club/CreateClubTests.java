@@ -3,13 +3,11 @@ package tests.api.club;
 import base.TestBase;
 import models.club.create.CreateClubBodyModel;
 import models.club.create.SuccessfulCreateClubResponseModel;
+import models.user.SuccessfulRegistrationAndGetResponseModel;
 import models.user.login.LoginBodyModel;
 import models.user.registration.RegistrationBodyModel;
-import models.user.SuccessfulRegistrationAndGetResponseModel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import static java.lang.String.format;
 
 
 public class CreateClubTests extends TestBase {

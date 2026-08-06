@@ -14,10 +14,10 @@ public class CreateClubUITests extends TestBase {
     @Test
     @DisplayName("Успешное создание клуба")
     public void successfulCreateClub(){
-        // register user
+
         SuccessfulRegistrationAndGetResponseModel registrationResponse = api.registre.registerUser(
                 new RegistrationBodyModel(faker.fakerUserFirstName, faker.fakerPassword));
-        // login user
+
         SuccessfulLoginResponseModel loginResponse = api.login.loginUser(
                 new LoginBodyModel(faker.fakerUserFirstName, faker.fakerPassword));
 

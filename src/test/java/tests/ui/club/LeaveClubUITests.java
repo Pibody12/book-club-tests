@@ -18,10 +18,10 @@ public class LeaveClubUITests extends TestBase {
     @Test
     @DisplayName("Выйти из собственного клуба")
     public void cantLeaveClubAsOwnerTest(){
-        // register user
+
         SuccessfulRegistrationAndGetResponseModel registrationResponse = api.registre.registerUser(
                 new RegistrationBodyModel(faker.fakerUserFirstName, faker.fakerPassword));
-        // login user
+
         SuccessfulLoginResponseModel loginResponse = api.login.loginUser(
                 new LoginBodyModel(faker.fakerUserFirstName, faker.fakerPassword));
 
@@ -60,10 +60,9 @@ public class LeaveClubUITests extends TestBase {
         String guestUsername = "Tim42";
         String guestPassword = "qweasd";
 
-        // register owner
-        SuccessfulRegistrationAndGetResponseModel registrationOwnerResponse = api.registre.registerUser(
+        api.registre.registerUser(
                 new RegistrationBodyModel(faker.fakerUserFirstName, faker.fakerPassword));
-        // login owner
+
         SuccessfulLoginResponseModel loginOwnerResponse = api.login.loginUser(
                 new LoginBodyModel(faker.fakerUserFirstName, faker.fakerPassword));
 

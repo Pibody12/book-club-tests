@@ -11,7 +11,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static java.lang.String.format;
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class UpdateTests extends TestBase {
 
