@@ -9,7 +9,7 @@ import static specs.club.DeleteClubSpec.successfulDeleteCLubResponseSpec;
 
 public class DeleteClubApiClient {
 
-    @Step("Изминение клуба")
+    @Step("Удаление клуба")
     public ValidatableResponse deleteClub(String token, Integer id) {
         return given(baseRequestSpec)
                 .headers("Authorization", token)

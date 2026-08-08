@@ -3,6 +3,8 @@ package api;
 
 import api.club.*;
 import api.reviews.AddReviewApiClient;
+import api.reviews.DeleteReviewApiClient;
+import api.reviews.GetReviewApiClient;
 import api.reviews.UpdateReviewApiClient;
 import api.user.*;
 
@@ -20,6 +22,8 @@ public class ApiClient {
     public final JoinClubApiClient joinClub = new JoinClubApiClient();
     public final AddReviewApiClient addReviews = new AddReviewApiClient();
     public final UpdateReviewApiClient updateReviews = new UpdateReviewApiClient();
+    public final DeleteReviewApiClient deleteReviews = new DeleteReviewApiClient();
+    public final GetReviewApiClient getReviews = new GetReviewApiClient();
     public final GetClubApiClient getClub = new GetClubApiClient();
     public final GetUserApiClient getUser = new GetUserApiClient();
 

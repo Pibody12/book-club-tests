@@ -21,6 +21,7 @@ public class TestData {
     public static final String INVALIDE_REFRESH_TOKEN_MESSAGE = "JSON parse error - unexpected character: line 1 column 1 (char 0)";
     public static final String INVALIDE_DATA_MESSAGE = "Invalid data. Expected a dictionary, but got list.";
     public static final String NO_CLUB_MESSAGE = "No Club matches the given query.";
+    public static final String NO_REVIEW_MESSAGE = "No BookReview matches the given query.";
     public static final String INVALIDE_ID_CLUB_MESSAGE = "Invalid pk \"0\" - object does not exist.";
     public static final String EMPTY_FIELD_REVIEWS_MESSAGE = "This field may not be blank.";
     public static final String INVALIDE_ASSESSMENT_MESSAGE = "Ensure this value is greater than or equal to 1.";
