@@ -4,7 +4,6 @@ import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.Selenide.localStorage;
 import static com.codeborne.selenide.Selenide.open;
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class GeneralSteps {
 

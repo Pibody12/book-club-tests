@@ -5,8 +5,9 @@ import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.*;
+import static helpers.Helpers.getNowDate;
+import static helpers.Helpers.getStars;
 
 public class ClubsPage {
 
@@ -17,12 +18,23 @@ public class ClubsPage {
     private SelenideElement authorClub = $(".authors");
     private SelenideElement descriptionClub = $(".description");
     private SelenideElement leaveButton = $(".leave-btn");
+    private SelenideElement addReviewButton = $(".add-review-btn");
     private SelenideElement joinButton = $(".join-btn");
     private SelenideElement errorMessage = $(".error");
+    private SelenideElement assessmentInput = $("#assessment");
+    private SelenideElement readPagesInput = $("#readPages");
+    private SelenideElement reviewInput = $("#review");
+    private SelenideElement publishButton = $(".save-btn");
+    private SelenideElement amountReviews = $$(".stat-item").findBy(text("Отзывов:")).$(".stat-value");
+    private SelenideElement reviewerName = $(".reviewer-name");
+    private SelenideElement stars = $(".stars");
+    private SelenideElement readsPages = $(".read-pages");
+    private SelenideElement textReview = $(".review-content p");
+    private SelenideElement dateReview = $(".review-date");
 
     // Actions
-    @Step("Открываем сайт на главной")
-    public ClubsPage openClubPage(String id) {
+    @Step("Открываем страницу клуба")
+    public ClubsPage openClubPage(Integer id) {
         open("/clubs/" + id);
 
         return this;
@@ -35,6 +47,41 @@ public class ClubsPage {
         return this;
     }
 
+    @Step("Открыть форму ")
+    public ClubsPage openReviewForm() {
+        addReviewButton.click();
+
+        return this;
+    }
+
+    @Step("Заполняем поле \"Оценка\"")
+    public ClubsPage fillAssessment(Integer assessment) {
+        assessmentInput.setValue(String.valueOf(assessment));
+
+        return this;
+    }
+
+    @Step("Заполняем поле \"Прочитано страниц\"")
+    public ClubsPage fillReadPages(Integer readPages) {
+        readPagesInput.setValue(String.valueOf(readPages));
+
+        return this;
+    }
+
+    @Step("Заполняем поле \"Ваш отзыв\"")
+    public ClubsPage fillReview(String review) {
+        reviewInput.setValue(review);
+
+        return this;
+    }
+
+    @Step("Опубликовать отзыв")
+    public ClubsPage publishReview() {
+        publishButton.click();
+
+        return this;
+    }
+
     @Step("Проверяем карточку клуба")
     public ClubsPage checkClubCards(String title, String author, String year, String description) {
         clubContent.shouldBe(visible);
@@ -42,6 +89,24 @@ public class ClubsPage {
         yearClub.shouldHave(text(year));
         authorClub.shouldHave(text(author));
         descriptionClub.shouldHave(text(description));
+
+        return this;
+    }
+
+    @Step("Проверяем карточку отзыва")
+    public ClubsPage checkReviewCards(String reviewer, Integer assessment, Integer readPages, String description) {
+        reviewerName.shouldHave(text(reviewer));
+        stars.shouldHave(text(getStars(assessment)));
+        readsPages.shouldHave(text(readPages + " стр."));
+        textReview.shouldHave(text(description));
+        dateReview.shouldHave(text(getNowDate()));
+
+        return this;
+    }
+
+    @Step("Проверяем количество отзывов")
+    public ClubsPage checkAmountReviews(String amount) {
+        amountReviews.shouldHave(text(amount));
 
         return this;
     }
@@ -59,4 +124,6 @@ public class ClubsPage {
 
         return this;
     }
+
+
 }
