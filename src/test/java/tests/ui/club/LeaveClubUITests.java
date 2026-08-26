@@ -41,7 +41,7 @@ public class LeaveClubUITests extends TestBase {
         SuccessfulCreateClubResponseModel responseData = api.createClub.createClub(clubData, accessToken);
 
         generalSteps.authInBrowser(localstorageAuthBody);
-        clubsPage.openClubPage(String.valueOf(responseData.id()));
+        clubsPage.openClubPage(responseData.id());
 
         clubsPage.checkClubCards(
                 faker.fakerBookTitle,
@@ -88,7 +88,7 @@ public class LeaveClubUITests extends TestBase {
         String localstorageAuthBody = new LocalStorageAuthModel(getUserResponse, loginGuestResponse.access(), loginGuestResponse.refresh(), true).toJson();
 
         generalSteps.authInBrowser(localstorageAuthBody);
-        clubsPage.openClubPage(String.valueOf(responseData.id()));
+        clubsPage.openClubPage(responseData.id());
         clubsPage.checkClubCards(
                 faker.fakerBookTitle,
                 faker.fakerbookAuthors,
@@ -97,7 +97,7 @@ public class LeaveClubUITests extends TestBase {
         );
         clubsPage.leaveClub();
         confirm();
-        clubsPage.openClubPage(String.valueOf(responseData.id()));
+        clubsPage.openClubPage(responseData.id());
         clubsPage.checkHasNotJoinClub();
     }
 }
