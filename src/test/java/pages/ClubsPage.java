@@ -19,8 +19,10 @@ public class ClubsPage {
     private SelenideElement descriptionClub = $(".description");
     private SelenideElement leaveButton = $(".leave-btn");
     private SelenideElement addReviewButton = $(".add-review-btn");
+    private SelenideElement deleteReviewButton = $(".delete-review-btn");
     private SelenideElement joinButton = $(".join-btn");
     private SelenideElement errorMessage = $(".error");
+    private SelenideElement noReviewMessage = $(".no-reviews p");
     private SelenideElement assessmentInput = $("#assessment");
     private SelenideElement readPagesInput = $("#readPages");
     private SelenideElement reviewInput = $("#review");
@@ -43,6 +45,13 @@ public class ClubsPage {
     @Step("Отписываемся от клуба")
     public ClubsPage leaveClub() {
         leaveButton.click();
+
+        return this;
+    }
+
+    @Step("Удаляем комментарий")
+    public ClubsPage deleteReview() {
+        deleteReviewButton.click();
 
         return this;
     }
@@ -114,6 +123,13 @@ public class ClubsPage {
     @Step("Проверяем текс ошибки выхода из своего клуба")
     public ClubsPage checkErrorMessage() {
         errorMessage.shouldHave(text("Не удалось покинуть клуб"));
+
+        return this;
+    }
+
+    @Step("Проверяем отсутствие отзывов у клуба")
+    public ClubsPage checkNoReviewMessage() {
+        noReviewMessage.shouldHave(text("Пока нет отзывов. Будьте первым, кто поделится впечатлениями!"));
 
         return this;
     }
