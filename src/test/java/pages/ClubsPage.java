@@ -20,6 +20,7 @@ public class ClubsPage {
     private SelenideElement leaveButton = $(".leave-btn");
     private SelenideElement addReviewButton = $(".add-review-btn");
     private SelenideElement deleteReviewButton = $(".delete-review-btn");
+    private SelenideElement editReviewButton = $(".edit-review-btn");
     private SelenideElement joinButton = $(".join-btn");
     private SelenideElement errorMessage = $(".error");
     private SelenideElement noReviewMessage = $(".no-reviews p");
@@ -52,6 +53,13 @@ public class ClubsPage {
     @Step("Удаляем комментарий")
     public ClubsPage deleteReview() {
         deleteReviewButton.click();
+
+        return this;
+    }
+
+    @Step("Редактировать комментарий")
+    public ClubsPage editReview() {
+        editReviewButton.click();
 
         return this;
     }
