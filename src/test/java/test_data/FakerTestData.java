@@ -8,7 +8,7 @@ public class FakerTestData {
     Faker fakerRu = new Faker(new Locale("ru"));
 
     public String
-            fakerUserFirstName = faker.name().firstName(),
+            fakerUserFirstName = faker.name().firstName() + faker.random().nextInt(9999),
             fakerInvalideName = faker.name().fullName(),
             fakerPassword = String.valueOf(faker.random().nextInt(9999999)),
             fakerBookTitle = faker.book().title() + faker.random().nextInt(99),
