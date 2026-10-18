@@ -61,15 +61,15 @@ public class LeaveClubUITests extends TestBase {
         String guestPassword = "qweasd";
 
         api.registre.registerUser(
-                new RegistrationBodyModel(faker.fakerUserFirstName, faker.fakerPassword));
+                new RegistrationBodyModel(faker.fakerUserTwoFirstName, faker.fakerPassword));
 
         SuccessfulLoginResponseModel loginOwnerResponse = api.login.loginUser(
-                new LoginBodyModel(faker.fakerUserFirstName, faker.fakerPassword));
+                new LoginBodyModel(faker.fakerUserTwoFirstName, faker.fakerPassword));
 
         String accessOwnerToken = loginOwnerResponse.access();
 
         CreateClubBodyModel clubData = new CreateClubBodyModel(
-                faker.fakerBookTitle,
+                faker.fakerBookTitle + "1",
                 faker.fakerbookAuthors,
                 faker.fakerPublicationYear,
                 faker.fakerDescription,

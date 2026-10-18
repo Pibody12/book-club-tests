@@ -9,7 +9,6 @@ import models.user.registration.RegistrationBodyModel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static java.lang.String.format;
 import static test_data.TestData.NO_CLUB_MESSAGE;
 
 public class DeleteClubTests extends TestBase {
@@ -24,7 +23,6 @@ public class DeleteClubTests extends TestBase {
         String accessToken = api.login.loginUserAndGetAccessToken(
                 new LoginBodyModel (faker.fakerUserFirstName, faker.fakerPassword)
         );
-        String token = format("Bearer %s", accessToken);
 
         CreateClubBodyModel clubData = new CreateClubBodyModel(
                 faker.fakerBookTitle,
@@ -33,11 +31,11 @@ public class DeleteClubTests extends TestBase {
                 faker.fakerDescription,
                 faker.fakerTelegramChatLink
         );
-        SuccessfulCreateClubResponseModel createData = api.createClub.createClub(clubData, token);
+        SuccessfulCreateClubResponseModel createData = api.createClub.createClub(clubData, accessToken);
 
-        api.deleteClub.deleteClub(token, createData.id());
+        api.deleteClub.deleteClub(accessToken, createData.id());
 
-        GetDeletedClubResponseModel getResponse = api.getClub.getDeletedClub(token, createData.id());
+        GetDeletedClubResponseModel getResponse = api.getClub.getDeletedClub(accessToken, createData.id());
 
         verificationSteps.shouldHaveValue("detail", NO_CLUB_MESSAGE, getResponse.detail());
     }

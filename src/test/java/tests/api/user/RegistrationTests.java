@@ -32,11 +32,11 @@ public class RegistrationTests extends TestBase {
     public void existingUserWrongRegistrationTest(){
 
         RegistrationBodyModel registrationData =
-                new RegistrationBodyModel(faker.fakerUserFirstName, faker.fakerPassword);
+                new RegistrationBodyModel(faker.fakerUserTwoFirstName, faker.fakerPassword);
 
         SuccessfulRegistrationAndGetResponseModel firstRegistrationResponse = api.registre.registerUser(registrationData);
 
-        verificationSteps.shouldHaveValue("username", firstRegistrationResponse.username(), faker.fakerUserFirstName);
+        verificationSteps.shouldHaveValue("username", firstRegistrationResponse.username(), faker.fakerUserTwoFirstName);
 
         ExistingUserResponseModel secondRegistrationResponse = api.registre.registerExistingUser(registrationData);
 

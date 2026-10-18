@@ -36,7 +36,7 @@ public class LoginTests extends TestBase {
     public void wrongCredentialsLoginTest(){
 
         api.registre.registerUser(
-                new RegistrationBodyModel(faker.fakerUserFirstName, faker.fakerPassword)
+                new RegistrationBodyModel(faker.fakerUserTwoFirstName, faker.fakerPassword)
         );
 
         WrongCredetialsLoginResponseModel loginResponse = api.login.wrongPasswordLogin(

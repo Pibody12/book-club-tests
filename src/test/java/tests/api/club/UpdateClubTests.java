@@ -5,13 +5,11 @@ import models.club.create.CreateClubBodyModel;
 import models.club.create.SuccessfulCreateClubResponseModel;
 import models.club.update.SuccessfulUpdateClubResponseModel;
 import models.club.update.UpdateClubBodyModel;
+import models.user.SuccessfulRegistrationAndGetResponseModel;
 import models.user.login.LoginBodyModel;
 import models.user.registration.RegistrationBodyModel;
-import models.user.SuccessfulRegistrationAndGetResponseModel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import static java.lang.String.format;
 
 public class UpdateClubTests extends TestBase {
 
@@ -25,7 +23,7 @@ public class UpdateClubTests extends TestBase {
         String accessToken = api.login.loginUserAndGetAccessToken(
                 new LoginBodyModel(faker.fakerUserFirstName, faker.fakerPassword)
         );
-        String token = format("Bearer %s", accessToken);
+//        String token = format("Bearer %s", accessToken);
 
         CreateClubBodyModel clubData = new CreateClubBodyModel(
                 faker.fakerBookTitle,
@@ -34,7 +32,7 @@ public class UpdateClubTests extends TestBase {
                 faker.fakerDescription,
                 faker.fakerTelegramChatLink
         );
-        SuccessfulCreateClubResponseModel responseCreateData = api.createClub.createClub(clubData, token);
+        SuccessfulCreateClubResponseModel responseCreateData = api.createClub.createClub(clubData, accessToken);
 
         UpdateClubBodyModel updateData = new UpdateClubBodyModel(
                 faker.fakerBookTitle,
@@ -44,7 +42,7 @@ public class UpdateClubTests extends TestBase {
                 faker.fakerTelegramChatLink
         );
 
-        SuccessfulUpdateClubResponseModel respUpdateData = api.updateClub.updateClub(updateData, token, responseCreateData.id());
+        SuccessfulUpdateClubResponseModel respUpdateData = api.updateClub.updateClub(updateData, accessToken, responseCreateData.id());
 
         verificationSteps.moreThan("id", respUpdateData.id(), 0);
         verificationSteps.shouldHaveValue("bookTitle", respUpdateData.bookTitle(), faker.fakerBookTitle);

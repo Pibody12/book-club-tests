@@ -12,7 +12,7 @@ public class UpdateClubApiClient {
     @Step("Изминение клуба")
     public SuccessfulUpdateClubResponseModel updateClub(Object clubData, String token, Integer id) {
         return given(baseRequestSpec)
-                .headers("Authorization", token)
+                .headers("Authorization","Bearer " + token)
                 .body(clubData)
                 .when()
                 .put("/clubs/" + id + "/")

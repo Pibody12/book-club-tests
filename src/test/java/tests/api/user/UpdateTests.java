@@ -49,11 +49,11 @@ public class UpdateTests extends TestBase {
     public void successfulPatchUpdateTest(){
 
         api.registre.registerUser(
-                new RegistrationBodyModel(faker.fakerUserFirstName, faker.fakerPassword)
+                new RegistrationBodyModel(faker.fakerUserTwoFirstName, faker.fakerPassword)
         );
 
         String accessToken =  api.login.loginUserAndGetAccessToken(
-                new LoginBodyModel(faker.fakerUserFirstName, faker.fakerPassword)
+                new LoginBodyModel(faker.fakerUserTwoFirstName, faker.fakerPassword)
         );
 
         String token = format("Bearer %s", accessToken);
@@ -64,7 +64,7 @@ public class UpdateTests extends TestBase {
         SuccessfulUpdatePatchResponseModel updateResponse = api.update.updatePatchUser(updateData, token);
 
         verificationSteps.moreThan("id", updateResponse.id(), 0);
-        verificationSteps.shouldHaveValue("username", updateResponse.username(), faker.fakerUserFirstName);
+        verificationSteps.shouldHaveValue("username", updateResponse.username(), faker.fakerUserTwoFirstName);
         verificationSteps.shouldHaveValue("first name", updateResponse.firstName(), firstName);
         verificationSteps.shouldHaveValue("last name", updateResponse.lastName(), lastName);
     }

@@ -12,7 +12,7 @@ public class DeleteClubApiClient {
     @Step("Удаление клуба")
     public ValidatableResponse deleteClub(String token, Integer id) {
         return given(baseRequestSpec)
-                .headers("Authorization", token)
+                .headers("Authorization", "Bearer " + token)
                 .when()
                 .delete("/clubs/" + id + "/")
                 .then()
