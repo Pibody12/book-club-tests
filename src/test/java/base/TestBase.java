@@ -3,6 +3,7 @@ package base;
 import api.ApiClient;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
+import org.junit.jupiter.api.BeforeEach;
 import pages.*;
 import steps.GeneralSteps;
 import steps.VerificationSteps;
@@ -19,8 +20,8 @@ public class TestBase {
     public CreateClubPage createClubPage = new CreateClubPage();
     public ClubsPage clubsPage = new ClubsPage();
 
+    protected FakerTestData faker;
     protected static final ApiClient api = new ApiClient();
-    protected static final FakerTestData faker = new FakerTestData();
     protected static final VerificationSteps verificationSteps = new VerificationSteps();
     protected static final GeneralSteps generalSteps = new GeneralSteps();
 
@@ -34,6 +35,11 @@ public class TestBase {
 //        Configuration.baseUrl = "http://localhost:8100/";
         Configuration.browserSize = "1920x1080";
 
+    }
+
+    @BeforeEach
+    void initFaker() {
+        faker = new FakerTestData();
     }
 
     @AfterEach
