@@ -18,7 +18,7 @@ import static com.codeborne.selenide.Selenide.*;
 public class ClubTest extends TestBase {
 
     @Test
-    public void cantLeaveClubAsOwnerTest2(){
+    public void cantLeaveClubAsOwnerTest(){
         // register user
         SuccessfulRegistrationAndGetResponseModel registrationResponse = api.registre.registerUser(
                 new RegistrationBodyModel(faker.fakerUserFirstName, faker.fakerPassword));
