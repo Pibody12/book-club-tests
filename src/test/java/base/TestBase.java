@@ -3,6 +3,8 @@ package base;
 import api.ApiClient;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
+import com.codeborne.selenide.logevents.SelenideLogger;
+import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.BeforeEach;
 import pages.*;
 import steps.GeneralSteps;
@@ -11,6 +13,8 @@ import io.restassured.RestAssured;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import test_data.FakerTestData;
+
+import static com.codeborne.selenide.Selenide.open;
 
 public class TestBase {
 
@@ -40,6 +44,12 @@ public class TestBase {
     @BeforeEach
     void initFaker() {
         faker = new FakerTestData();
+    }
+
+    @BeforeEach
+    void addLogger() {
+        SelenideLogger.addListener("AllureSelenide", new AllureSelenide());
+        open();
     }
 
     @AfterEach
