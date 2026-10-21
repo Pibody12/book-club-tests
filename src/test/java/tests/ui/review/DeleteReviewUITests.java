@@ -1,6 +1,7 @@
 package tests.ui.review;
 
 import base.TestBase;
+import io.qameta.allure.Story;
 import models.club.create.CreateClubBodyModel;
 import models.club.create.SuccessfulCreateClubResponseModel;
 import models.localstorage.LocalStorageAuthModel;
@@ -16,6 +17,7 @@ import static com.codeborne.selenide.Selenide.confirm;
 import static test_data.TestData.PASSWORD;
 import static test_data.TestData.USERNAME;
 
+@Story("Удаление комментария UI")
 public class DeleteReviewUITests extends TestBase {
 
     @Test

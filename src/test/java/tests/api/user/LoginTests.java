@@ -2,6 +2,7 @@ package tests.api.user;
 
 
 import base.TestBase;
+import io.qameta.allure.Story;
 import models.user.login.*;
 import models.user.registration.RegistrationBodyModel;
 import org.junit.jupiter.api.DisplayName;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import static test_data.TestData.*;
 
+@Story("Авторизация API")
 public class LoginTests extends TestBase {
 
     String wrongPassword = "string666";

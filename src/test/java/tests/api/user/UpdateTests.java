@@ -1,6 +1,7 @@
 package tests.api.user;
 
 import base.TestBase;
+import io.qameta.allure.Story;
 import models.user.login.LoginBodyModel;
 import models.user.registration.RegistrationBodyModel;
 import models.user.update.SuccessfulUpdatePatchResponseModel;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import static java.lang.String.format;
 
+@Story("Изменение пользователя API")
 public class UpdateTests extends TestBase {
 
     @Test

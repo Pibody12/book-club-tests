@@ -1,9 +1,11 @@
 package tests.ui.user;
 
 import base.TestBase;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@Story("Регистрация UI")
 public class RegistrationUserUITests extends TestBase {
 
     @Test

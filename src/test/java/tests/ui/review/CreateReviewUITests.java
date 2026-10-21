@@ -1,6 +1,7 @@
 package tests.ui.review;
 
 import base.TestBase;
+import io.qameta.allure.Story;
 import models.club.create.CreateClubBodyModel;
 import models.club.create.SuccessfulCreateClubResponseModel;
 import models.localstorage.LocalStorageAuthModel;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Selenide.refresh;
 
+@Story("Создание комментария UI")
 public class CreateReviewUITests extends TestBase {
 
     @Test

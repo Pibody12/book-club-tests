@@ -1,6 +1,7 @@
 package tests.ui.club;
 
 import base.TestBase;
+import io.qameta.allure.Story;
 import models.club.create.CreateClubBodyModel;
 import models.club.create.SuccessfulCreateClubResponseModel;
 import models.localstorage.LocalStorageAuthModel;
@@ -9,15 +10,18 @@ import models.user.login.SuccessfulLoginResponseModel;
 import models.user.registration.RegistrationBodyModel;
 import models.user.SuccessfulRegistrationAndGetResponseModel;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 
+
 public class ClubTest extends TestBase {
 
     @Test
+    @DisplayName("Выйти из собственного клуба")
     public void cantLeaveClubAsOwnerTest(){
         // register user
         SuccessfulRegistrationAndGetResponseModel registrationResponse = api.registre.registerUser(

@@ -1,6 +1,7 @@
 package tests.api.club;
 
 import base.TestBase;
+import io.qameta.allure.Story;
 import models.club.create.CreateClubBodyModel;
 import models.club.create.SuccessfulCreateClubResponseModel;
 import models.club.update.SuccessfulUpdateClubResponseModel;
@@ -11,6 +12,7 @@ import models.user.registration.RegistrationBodyModel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@Story("Иминение клуба API")
 public class UpdateClubTests extends TestBase {
 
     @Test

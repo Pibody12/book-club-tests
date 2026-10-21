@@ -1,6 +1,7 @@
 package tests.ui.club;
 
 import base.TestBase;
+import io.qameta.allure.Story;
 import models.localstorage.LocalStorageAuthModel;
 import models.user.login.LoginBodyModel;
 import models.user.login.SuccessfulLoginResponseModel;
@@ -9,6 +10,7 @@ import models.user.SuccessfulRegistrationAndGetResponseModel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@Story("Создание клуба UI")
 public class CreateClubUITests extends TestBase {
 
     @Test

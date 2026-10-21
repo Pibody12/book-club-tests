@@ -1,6 +1,7 @@
 package tests.api.club;
 
 import base.TestBase;
+import io.qameta.allure.Story;
 import models.club.create.CreateClubBodyModel;
 import models.club.create.SuccessfulCreateClubResponseModel;
 import models.club.get.GetDeletedClubResponseModel;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import static test_data.TestData.NO_CLUB_MESSAGE;
 
+@Story("Удаление клуба API")
 public class DeleteClubTests extends TestBase {
 
     @Test

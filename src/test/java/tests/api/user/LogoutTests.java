@@ -1,6 +1,7 @@
 package tests.api.user;
 
 import base.TestBase;
+import io.qameta.allure.Story;
 import models.user.login.LoginBodyModel;
 import models.user.logout.EmptyBodyLogoutResponseModel;
 import models.user.logout.ListWithTwoTokenLogoutResponseModel;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import static java.lang.String.format;
 import static test_data.TestData.*;
 
+@Story("Logout API")
 public class LogoutTests  extends TestBase {
 
     @Test

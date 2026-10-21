@@ -1,6 +1,7 @@
 package tests.api.review;
 
 import base.TestBase;
+import io.qameta.allure.Story;
 import models.club.create.CreateClubBodyModel;
 import models.club.create.SuccessfulCreateClubResponseModel;
 import models.reviews.add.AddReviewBodyModel;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import static test_data.TestData.*;
 
+@Story("Добавление комментария API")
 public class AddReviewTests extends TestBase {
 
     @Test
