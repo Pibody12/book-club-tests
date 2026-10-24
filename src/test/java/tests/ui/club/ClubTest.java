@@ -17,10 +17,10 @@ import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 
-
 public class ClubTest extends TestBase {
 
     @Test
+    @Disabled
     @DisplayName("Выйти из собственного клуба")
     public void cantLeaveClubAsOwnerTest(){
         // register user

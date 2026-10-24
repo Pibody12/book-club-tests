@@ -4,8 +4,10 @@ import api.ApiClient;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.logevents.SelenideLogger;
+import helpers.Attach;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.BeforeEach;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import pages.*;
 import steps.GeneralSteps;
 import steps.VerificationSteps;
@@ -14,6 +16,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import test_data.FakerTestData;
 
+import java.util.Map;
+
+import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static com.codeborne.selenide.Selenide.open;
 
 public class TestBase {
@@ -29,6 +34,8 @@ public class TestBase {
     protected static final VerificationSteps verificationSteps = new VerificationSteps();
     protected static final GeneralSteps generalSteps = new GeneralSteps();
 
+    static Boolean enableRecordVideo = Boolean.parseBoolean(System.getProperty("enableRecordVideo", "true"));
+
     @BeforeAll
     static public void setUp() {
         RestAssured.baseURI = "https://book-club.qa.guru/";
@@ -38,6 +45,13 @@ public class TestBase {
         Configuration.baseUrl = "https://book-club.qa.guru";
 //        Configuration.baseUrl = "http://localhost:8100/";
         Configuration.browserSize = "1920x1080";
+
+        DesiredCapabilities capabilities = new DesiredCapabilities();
+        capabilities.setCapability("selenoid:options", Map.<String, Object>of(
+                "enableVNC", true,
+                "enableVideo", true
+        ));
+        Configuration.browserCapabilities = capabilities;
         Configuration.remote = "https://qa_engineer:-aAb_-4gs53FD@selenoid.qa.guru/wd/hub";
     }
 
@@ -53,7 +67,11 @@ public class TestBase {
     }
 
     @AfterEach
-    void tearDown() {
-        Selenide.closeWebDriver();
+    void addAttachments() {
+        Attach.screenshotAs("Last screenshot");
+        Attach.pageSource();
+        Attach.browserConsoleLogs();
+        Attach.addVideo();
+        closeWebDriver();
     }
 }
